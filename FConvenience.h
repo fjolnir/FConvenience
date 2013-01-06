@@ -25,6 +25,6 @@
 #define Async(...) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ##__VA_ARGS__)
 #define AsyncOnMain(...) dispatch_async(dispatch_get_main_queue(), ##__VA_ARGS__)
 
-#ifdef IPHONE_OS
+#if TARGET_OS_IPHONE
 #define Animate(dur, ...) [UIView animateWithDuration:(dur) animations:__VA_ARGS__]
 #endif
