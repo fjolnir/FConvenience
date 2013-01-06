@@ -30,7 +30,7 @@
 
 // iOS/Mac specific
 #if TARGET_OS_IPHONE
-    #define Animate(dur, ...) [UIView animateWithDuration:(dur) animations:__VA_ARGS__]
+    #define WithDur UIView animateWithDuration // Use like: [WithDur:0.3 animations:^{...}]
     #define Device [UIDevice currentDevice]
     #define UIApp [UIApplication sharedApplication]
 #else
