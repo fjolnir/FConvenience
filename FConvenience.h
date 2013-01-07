@@ -28,9 +28,13 @@
 #define Workspace [NSWorkspace sharedWorkspace]
 #define FileManager [NSFileManager defaultManager]
 
+#define unless(...) if(!(__VA_ARGS__))
+#define until(...) while(!(__VA_ARGS__))
+
 // iOS/Mac specific
 #if TARGET_OS_IPHONE
-    #define WithDur UIView animateWithDuration // Use like: [WithDur:0.3 animations:^{...}]
+    #define WithDur UIView animateWithDuration // Use like: [AnimateWithDur:0.3
+                                               //                animations:^{...}]
     #define Device [UIDevice currentDevice]
     #define UIApp [UIApplication sharedApplication]
 #else
