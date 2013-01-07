@@ -1,4 +1,5 @@
 // Frequently used macros for uncluttering things (Import in your PCH)
+#import <assert.h>
 
 #define _Log(prefix, ...) fprintf(stderr, prefix "%s[%u] %s: %s\n", \
     [[[NSProcessInfo processInfo] processName] UTF8String], \
@@ -10,12 +11,23 @@
 
 #define Log(...) _Log("V ", ##__VA_ARGS__) // V: Verbose
 
+#define _CheckOSErr(shouldAssert, error, fmt, ...) do { \
+    OSStatus __err = (error); \
+    if(__err) { \
+        Log(@"OSErr %d: " fmt, (int)__err, ##__VA_ARGS__); \
+        if(shouldAssert) \
+            assert(false); \
+    } \
+} while(0)
+
 #ifdef DEBUG
     #define CrashHere() { *(int *)0 = 0xDEADBEEF; }
     #define DebugLog(...) _Log("D ", ##__VA_ARGS__) // D: Debug
+    #define CheckOSErr(err, fmt, ...) _CheckOSErr(true, err, fmt, ##__VA_ARGS__)
 #else
     #define CrashHere()
     #define DebugLog(...) 
+    #define CheckOSErr(err, fmt, ...) _CheckOSErr(false, err, fmt, ##__VA_ARGS__)
 #endif
 
 #define Once(...) do { \
