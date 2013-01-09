@@ -43,6 +43,8 @@
 #define unless(...) if(!(__VA_ARGS__))
 #define until(...) while(!(__VA_ARGS__))
 
+#define CLAMP(val, min, max) MAX((min), MIN((val), (max)))
+
 // iOS/Mac specific
 #if TARGET_OS_IPHONE
     #define WithDur UIView animateWithDuration // Use like: [AnimateWithDur:0.3
