@@ -21,7 +21,7 @@
 } while(0)
 
 #ifdef DEBUG
-    #define CrashHere() { *(int *)0 = 0xDEADBEEF; }
+    #define CrashHere()   { *(int *)0 = 0xDEADBEEF; }
     #define DebugLog(...) _Log("D ", ##__VA_ARGS__) // D: Debug
     #define CheckOSErr(err, fmt, ...) _CheckOSErr(true, err, fmt, ##__VA_ARGS__)
 #else
@@ -37,20 +37,19 @@
 #define Async(...) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ##__VA_ARGS__)
 #define AsyncOnMain(...) dispatch_async(dispatch_get_main_queue(), ##__VA_ARGS__)
 
-#define Workspace [NSWorkspace sharedWorkspace]
+#define Workspace   [NSWorkspace sharedWorkspace]
 #define FileManager [NSFileManager defaultManager]
+#define Defaults    [NSUserDefaults standardUserDefaults]
 
 #define unless(...) if(!(__VA_ARGS__))
-#define until(...) while(!(__VA_ARGS__))
+#define until(...)  while(!(__VA_ARGS__))
 
 #define CLAMP(val, min, max) MAX((min), MIN((val), (max)))
 
-// iOS/Mac specific
+// iOS specific
 #if TARGET_OS_IPHONE
     #define WithDur UIView animateWithDuration // Use like: [AnimateWithDur:0.3
                                                //                animations:^{...}]
     #define Device [UIDevice currentDevice]
-    #define UIApp [UIApplication sharedApplication]
-#else
-    #define Defaults [NSUserDefaults standardUserDefaults]
+    #define UIApp  [UIApplication sharedApplication]
 #endif
