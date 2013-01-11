@@ -37,6 +37,7 @@
 #define Async(...) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ##__VA_ARGS__)
 #define AsyncOnMain(...) dispatch_async(dispatch_get_main_queue(), ##__VA_ARGS__)
 
+#define NotificationCenter [NSNotificationCenter defaultCenter]
 #define Workspace   [NSWorkspace sharedWorkspace]
 #define FileManager [NSFileManager defaultManager]
 #define Defaults    [NSUserDefaults standardUserDefaults]
