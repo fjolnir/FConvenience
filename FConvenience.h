@@ -1,6 +1,4 @@
 // Frequently used macros for uncluttering things (Import in your PCH)
-#import <assert.h>
-
 #define _Log(prefix, ...) fprintf(stderr, prefix "%s[%u] %s: %s\n", \
     [[[NSProcessInfo processInfo] processName] UTF8String], \
     getpid(),\
@@ -15,8 +13,7 @@
     OSStatus __err = (error); \
     if(__err) { \
         Log(@"OSErr %d: " fmt, (int)__err, ##__VA_ARGS__); \
-        if(shouldAssert) \
-            assert(false); \
+        assert(!shouldAssert); \
     } \
 } while(0)
 
@@ -30,12 +27,15 @@
     #define CheckOSErr(err, fmt, ...) _CheckOSErr(false, err, fmt, ##__VA_ARGS__)
 #endif
 
+#define GlobalQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+#define MainQueue dispatch_get_main_queue()
+
 #define Once(...) do { \
     static dispatch_once_t __token; \
     dispatch_once(&__token, ##__VA_ARGS__); \
 } while(0)
-#define Async(...) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ##__VA_ARGS__)
-#define AsyncOnMain(...) dispatch_async(dispatch_get_main_queue(), ##__VA_ARGS__)
+#define Async(...) dispatch_async(GlobalQueue, ##__VA_ARGS__)
+#define AsyncOnMain(...) dispatch_async(MainQueue, ##__VA_ARGS__)
 
 #define NotificationCenter [NSNotificationCenter defaultCenter]
 #define Workspace   [NSWorkspace sharedWorkspace]
