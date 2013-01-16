@@ -3,7 +3,7 @@
     [[[NSProcessInfo processInfo] processName] UTF8String], \
     getpid(),\
     [[NSString stringWithFormat:@"%10.15s:%u", \
-                                [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], \
+                                [[@(__FILE__) lastPathComponent] UTF8String], \
                                 __LINE__] UTF8String],\
     [[NSString stringWithFormat:__VA_ARGS__] UTF8String])
 
