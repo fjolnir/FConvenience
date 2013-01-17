@@ -36,6 +36,13 @@
 } while(0)
 #define Async(...) dispatch_async(GlobalQueue, ##__VA_ARGS__)
 #define AsyncOnMain(...) dispatch_async(MainQueue, ##__VA_ARGS__)
+#define SyncOnMain(...) do { \
+    dispatch_block_t __blk = __VA_ARGS__; \
+    if([NSThread isMainThread]) \
+        __blk(); \
+    else \
+        dispatch_sync(MainQueue, __blk); \
+} while(0)
 
 #define NotificationCenter [NSNotificationCenter defaultCenter]
 #define Workspace   [NSWorkspace sharedWorkspace]
