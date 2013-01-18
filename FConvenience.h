@@ -54,3 +54,8 @@
     #define Device [UIDevice currentDevice]
     #define UIApp  [UIApplication sharedApplication]
 #endif
+
+@interface NSUserDefaults (Subscripts)
+- (id)objectForKeyedSubscript:(id)aKey;
+- (void)setObject:(id)aObj forKeyedSubscript:(id)aKey;
+@end
