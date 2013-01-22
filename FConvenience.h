@@ -45,7 +45,7 @@
 } while(0)
 #define AfterDelay(seconds, ...) \
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds) * NSEC_PER_SEC), \
-                   MainQueue, ##__VA_ARGS__);
+                   MainQueue, ##__VA_ARGS__)
 
 #define NotificationCenter [NSNotificationCenter defaultCenter]
 #define Workspace   [NSWorkspace sharedWorkspace]
