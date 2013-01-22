@@ -43,6 +43,9 @@
     else \
         dispatch_sync(MainQueue, __blk); \
 } while(0)
+#define AfterDelay(seconds, ...) \
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds) * NSEC_PER_SEC), \
+                   MainQueue, ##__VA_ARGS__);
 
 #define NotificationCenter [NSNotificationCenter defaultCenter]
 #define Workspace   [NSWorkspace sharedWorkspace]
@@ -60,4 +63,7 @@
                                                //                animations:^{...}]
     #define Device [UIDevice currentDevice]
     #define UIApp  [UIApplication sharedApplication]
+    #define SetVolume(vol) \
+        [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
+
 #endif
