@@ -56,6 +56,14 @@
 #define until(...)  while(!(__VA_ARGS__))
 
 #define CLAMP(val, min, max) MAX((min), MIN((val), (max)))
+#define BETWEEN(val, low, high) ({ \
+        const __typeof(val) __val = (val); \
+        __val > (low) && __val < (high); \
+})
+#define INRANGE(val, low, high) ({ \
+        const __typeof(val) __val = (val); \
+        __val >= (low) && __val <= (high); \
+})
 
 // iOS specific
 #if TARGET_OS_IPHONE
