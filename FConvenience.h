@@ -75,3 +75,8 @@
         [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
 
 #endif
+
+@interface NSUserDefaults (Subscripts)
+- (id)objectForKeyedSubscript:(id)aKey;
+- (void)setObject:(id)aObj forKeyedSubscript:(id)aKey;
+@end
