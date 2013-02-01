@@ -1,11 +1,19 @@
 // Frequently used macros for uncluttering things (Import in your PCH)
-#define _Log(prefix, ...) fprintf(stderr, prefix "%s[%u] %s: %s\n", \
-    [[[NSProcessInfo processInfo] processName] UTF8String], \
-    getpid(),\
-    [[NSString stringWithFormat:@"%10.15s:%u", \
-                                [[@(__FILE__) lastPathComponent] UTF8String], \
-                                __LINE__] UTF8String],\
-    [[NSString stringWithFormat:__VA_ARGS__] UTF8String])
+#import <pthread.h>
+
+#ifdef __OBJC__
+    #define _Log(prefix, format, ...) \
+        fprintf(stderr, prefix "%s[%u] %10.15s:%u: %s\n", \
+        [[[NSProcessInfo processInfo] processName] UTF8String], \
+        getpid(),\
+        __FILE__, __LINE__, \
+        [[NSString stringWithFormat:format, ##__VA_ARGS__] UTF8String])
+#else
+    #define _Log(prefix, format, ...) \
+        fprintf(stderr, prefix "%10.15s:%u: " format "\n", \
+        __FILE__, __LINE__, \
+        ##__VA_ARGS__)
+#endif
 
 #define Log(...) _Log("V ", ##__VA_ARGS__) // V: Verbose
 
@@ -21,10 +29,30 @@
     #define CrashHere()   { *(int *)0 = 0xDEADBEEF; }
     #define DebugLog(...) _Log("D ", ##__VA_ARGS__) // D: Debug
     #define CheckOSErr(err, fmt, ...) _CheckOSErr(true, err, fmt, ##__VA_ARGS__)
+    #define IfDebug(...) __VA_ARGS__
+    #define glError() do { \
+        const char *errStr; \
+        GLenum err; \
+        while((err = glGetError()) != GL_NO_ERROR) { \
+            switch(err) { \
+                case GL_INVALID_ENUM:      errStr = "GL_INVALID_ENUM";      break; \
+                case GL_INVALID_VALUE:     errStr = "GL_INVALID_VALUE";     break; \
+                case GL_OUT_OF_MEMORY:     errStr = "GL_OUT_OF_MEMORY";     break; \
+                case GL_INVALID_OPERATION: errStr = "GL_INVALID_OPERATION"; break; \
+                case GL_INVALID_FRAMEBUFFER_OPERATION: \
+                    errStr = "GL_INVALID_FRAMEBUFFER_OPERATION"; break; \
+                default: errStr = "UNKNOWN"; \
+            } \
+            printf("glError(0x%04x): %s caught at %s:%u\n", \
+                   err, errStr, __FILE__, __LINE__); \
+        } \
+    } while(0)
 #else
     #define CrashHere()
     #define DebugLog(...) 
     #define CheckOSErr(err, fmt, ...) _CheckOSErr(false, err, fmt, ##__VA_ARGS__)
+    #define IfDebug(...)
+    #define glError()
 #endif
 
 #define GlobalQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
@@ -38,7 +66,7 @@
 #define AsyncOnMain(...) dispatch_async(MainQueue, ##__VA_ARGS__)
 #define SyncOnMain(...) do { \
     dispatch_block_t __blk = __VA_ARGS__; \
-    if([NSThread isMainThread]) \
+    if(pthread_main_np()) \
         __blk(); \
     else \
         dispatch_sync(MainQueue, __blk); \
@@ -46,11 +74,6 @@
 #define AfterDelay(seconds, ...) \
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds) * NSEC_PER_SEC), \
                    MainQueue, ##__VA_ARGS__)
-
-#define NotificationCenter [NSNotificationCenter defaultCenter]
-#define Workspace   [NSWorkspace sharedWorkspace]
-#define FileManager [NSFileManager defaultManager]
-#define Defaults    [NSUserDefaults standardUserDefaults]
 
 #define unless(...) if(!(__VA_ARGS__))
 #define until(...)  while(!(__VA_ARGS__))
@@ -65,15 +88,21 @@
         __val >= (low) && __val <= (high); \
 })
 
+#ifdef __OBJC__
+    #define NotificationCenter [NSNotificationCenter defaultCenter]
+    #define Workspace   [NSWorkspace sharedWorkspace]
+    #define FileManager [NSFileManager defaultManager]
+    #define Defaults    [NSUserDefaults standardUserDefaults]
+#endif
+
 // iOS specific
-#if TARGET_OS_IPHONE
-    #define WithDur UIView animateWithDuration // Use like: [AnimateWithDur:0.3
-                                               //                animations:^{...}]
+#if TARGET_OS_IPHONE && defined(__OBJC__)
+    #define WithDur UIView animateWithDuration // Use like: [WithDur:0.3
+                                               //         animations:^{...}]
     #define Device [UIDevice currentDevice]
     #define UIApp  [UIApplication sharedApplication]
     #define SetVolume(vol) \
         [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
-
 #endif
 
 @interface NSUserDefaults (Subscripts)
