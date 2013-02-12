@@ -87,6 +87,7 @@
         const __typeof(val) __val = (val); \
         __val >= (low) && __val <= (high); \
 })
+#define POWOF2(n) ({ __typeof(n) __n = (n); (__n != 0) && !(__n & (__n - 1)); })
 
 #ifdef __OBJC__
     #define NotificationCenter [NSNotificationCenter defaultCenter]
