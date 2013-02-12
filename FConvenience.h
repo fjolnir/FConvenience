@@ -91,9 +91,10 @@
 
 #ifdef __OBJC__
     #define NotificationCenter [NSNotificationCenter defaultCenter]
-    #define Workspace   [NSWorkspace sharedWorkspace]
-    #define FileManager [NSFileManager defaultManager]
-    #define Defaults    [NSUserDefaults standardUserDefaults]
+    #define Workspace     [NSWorkspace sharedWorkspace]
+    #define FileManager   [NSFileManager defaultManager]
+    #define Defaults      [NSUserDefaults standardUserDefaults]
+    #define NSFormat(...) [NSString stringWithFormat:__VA_ARGS__]
 #endif
 
 // iOS specific
