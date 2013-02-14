@@ -65,7 +65,7 @@
 #define Async(...) dispatch_async(GlobalQueue, ##__VA_ARGS__)
 #define AsyncOnMain(...) dispatch_async(MainQueue, ##__VA_ARGS__)
 #define SyncOnMain(...) do { \
-    dispatch_block_t __blk = __VA_ARGS__; \
+    const dispatch_block_t __blk = __VA_ARGS__; \
     if(pthread_main_np()) \
         __blk(); \
     else \
