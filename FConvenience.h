@@ -101,11 +101,15 @@
 #if TARGET_OS_IPHONE && defined(__OBJC__)
     #define WithDur UIView animateWithDuration // Use like: [WithDur:0.3
                                                //         animations:^{...}]
-    #define Device [UIDevice currentDevice]
+    #define RGBA(r,g,b,a) [UIColor colorWithRed:(r) green:(g) blue:(b) alpha:(a)]
+#define Device [UIDevice currentDevice]
     #define UIApp  [UIApplication sharedApplication]
     #define SetVolume(vol) \
         [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
+#else
+    #define RGBA(r,g,b,a) [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)]
 #endif
+#define RGB(r,g,b)  RGBA((r), (g), (b), 1)
 
 @interface NSUserDefaults (Subscripts)
 - (id)objectForKeyedSubscript:(id)aKey;
