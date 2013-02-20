@@ -91,6 +91,7 @@
 
 #ifdef __OBJC__
     #define NotificationCenter [NSNotificationCenter defaultCenter]
+    #define Bundle        [NSBundle mainBundle]
     #define Workspace     [NSWorkspace sharedWorkspace]
     #define FileManager   [NSFileManager defaultManager]
     #define Defaults      [NSUserDefaults standardUserDefaults]
@@ -110,6 +111,24 @@
     #define RGBA(r,g,b,a) [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)]
 #endif
 #define RGB(r,g,b)  RGBA((r), (g), (b), 1)
+
+#pragma mark - Subscripts
+
+#if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+@interface NSArray (Subscripts)
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+@end
+@interface NSMutableArray (Subscripts)
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
+@end
+
+@interface  NSDictionary (Subscripts)
+- (id)objectForKeyedSubscript:(id)key;
+@end
+@interface  NSMutableDictionary (Subscripts)
+- (void)setObject:(id)obj forKeyedSubscript:(id)key;
+@end
+#endif
 
 @interface NSUserDefaults (Subscripts)
 - (id)objectForKeyedSubscript:(id)aKey;
