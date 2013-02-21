@@ -103,7 +103,7 @@
     #define WithDur UIView animateWithDuration // Use like: [WithDur:0.3
                                                //         animations:^{...}]
     #define RGBA(r,g,b,a) [UIColor colorWithRed:(r) green:(g) blue:(b) alpha:(a)]
-#define Device [UIDevice currentDevice]
+    #define Device [UIDevice currentDevice]
     #define UIApp  [UIApplication sharedApplication]
     #define SetVolume(vol) \
         [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
