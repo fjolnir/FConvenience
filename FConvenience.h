@@ -134,3 +134,8 @@
 - (id)objectForKeyedSubscript:(id)aKey;
 - (void)setObject:(id)aObj forKeyedSubscript:(id)aKey;
 @end
+
+@interface NSCache (Subscripts)
+- (id)objectForKeyedSubscript:(id)aKey;
+- (void)setObject:(id)aObj forKeyedSubscript:(id)aKey;
+@end
