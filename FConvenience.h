@@ -26,12 +26,13 @@
 } while(0)
 
 #ifdef DEBUG
+    #define DEBUG_ON YES
     #define CrashHere()   { *(int *)0 = 0xDEADBEEF; }
     #define DebugLog(...) _Log("D ", ##__VA_ARGS__) // D: Debug
     #define CheckOSErr(err, fmt, ...) _CheckOSErr(true, err, fmt, ##__VA_ARGS__)
     #define IfDebug(...) __VA_ARGS__
     #define glError() do { \
-        const char *errStr; \
+        const char *errStr = NULL; \
         GLenum err; \
         while((err = glGetError()) != GL_NO_ERROR) { \
             switch(err) { \
@@ -43,11 +44,13 @@
                     errStr = "GL_INVALID_FRAMEBUFFER_OPERATION"; break; \
                 default: errStr = "UNKNOWN"; \
             } \
-            printf("glError(0x%04x): %s caught at %s:%u\n", \
-                   err, errStr, __FILE__, __LINE__); \
+            DebugLog(@"glError(0x%04x): %s caught at %s:%u\n", \
+                     err, errStr, __FILE__, __LINE__); \
         } \
+        NSCAssert(errStr == NULL, @"OpenGL Error"); \
     } while(0)
 #else
+    #define DEBUG_ON NO
     #define CrashHere()
     #define DebugLog(...) 
     #define CheckOSErr(err, fmt, ...) _CheckOSErr(false, err, fmt, ##__VA_ARGS__)
