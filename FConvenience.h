@@ -118,6 +118,8 @@
 #define HSB(h,s,b) HSBA((h), (s), (b), 1)
 #define GRAY(b) ({ __typeof(b) b_ = (b); RGB(b_,b_,b_); })
 
+#ifdef __OBJC__
+
 #pragma mark - Subscripts
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
@@ -145,3 +147,8 @@
 - (id)objectForKeyedSubscript:(id)aKey;
 - (void)setObject:(id)aObj forKeyedSubscript:(id)aKey;
 @end
+
+#pragma mark -
+@class UIImage;
+UIImage *Screenshot();
+#endif
