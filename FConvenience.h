@@ -8,6 +8,9 @@
         getpid(),\
         __FILE__, __LINE__, \
         [[NSString stringWithFormat:format, ##__VA_ARGS__] UTF8String])
+
+    #define UIIdiomString() ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? @"ipad" : @"iphone")
+    #define DeviceIsIPad() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 #else
     #define _Log(prefix, format, ...) \
         fprintf(stderr, prefix "%10.15s:%u: " format "\n", \
