@@ -84,13 +84,28 @@
 #define unless(...) if(!(__VA_ARGS__))
 #define until(...)  while(!(__VA_ARGS__))
 
+#ifndef MIN
+    #define MIN(a,b) ({ \
+        __typeof(a) const __a = (a); \
+        __typeof(b) const __b = (b); \
+        __a > __b ? __b : __a; \
+    })
+#endif
+#ifndef MAX
+    #define MAX(a,b) ({ \
+        __typeof(a) const __a = (a); \
+        __typeof(b) const __b = (b); \
+        __a > __b ? __a : __b; \
+    })
+#endif
+
 #define CLAMP(val, min, max) MAX((min), MIN((val), (max)))
 #define BETWEEN(val, low, high) ({ \
-        const __typeof(val) __val = (val); \
+        __typeof(val) const __val = (val); \
         __val > (low) && __val < (high); \
 })
 #define INRANGE(val, low, high) ({ \
-        const __typeof(val) __val = (val); \
+        __typeof(val) const __val = (val); \
         __val >= (low) && __val <= (high); \
 })
 #define POWOF2(n) ({ __typeof(n) __n = (n); (__n != 0) && !(__n & (__n - 1)); })
