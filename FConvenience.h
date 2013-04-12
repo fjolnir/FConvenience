@@ -1,5 +1,6 @@
 // Frequently used macros for uncluttering things (Import in your PCH)
 #import <pthread.h>
+#import <stdio.h>
 
 #ifdef __OBJC__
     #define _Log(prefix, format, ...) \
