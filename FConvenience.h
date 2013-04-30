@@ -118,6 +118,7 @@
     #define FileManager   [NSFileManager defaultManager]
     #define Defaults      [NSUserDefaults standardUserDefaults]
     #define NSFormat(...) [NSString stringWithFormat:__VA_ARGS__]
+    #define FetchReq(name) [NSFetchRequest fetchRequestWithEntityName:(name)]
 #endif
 
 // iOS specific
