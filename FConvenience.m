@@ -55,14 +55,14 @@
 @end
 
 
-UIImage *Screenshot()
+UIImage *Screenshot(float const aScale)
 {
-    CGSize imageSize = [[UIScreen mainScreen] bounds].size;
-    UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+    CGSize const imageSize = [[UIScreen mainScreen] bounds].size;
+    UIGraphicsBeginImageContextWithOptions(imageSize, YES, aScale);
 
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef const context = UIGraphicsGetCurrentContext();
 
-    for(UIWindow *win in [[UIApplication sharedApplication] windows])
+    for(UIWindow * const win in UIApp.windows)
     {
         if([win screen] == [UIScreen mainScreen]) {
             CGContextSaveGState(context);
@@ -77,7 +77,7 @@ UIImage *Screenshot()
             CGContextRestoreGState(context);
         }
     }
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage * const image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     return image;
