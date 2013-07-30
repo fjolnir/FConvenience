@@ -54,8 +54,9 @@
 }
 @end
 
+#if TARGET_OS_IPHONE && defined(__OBJC__)
 
-UIImage *Screenshot(float const aScale)
+UIImage *FScreenshot(float const aScale)
 {
     CGSize const imageSize = [[UIScreen mainScreen] bounds].size;
     UIGraphicsBeginImageContextWithOptions(imageSize, YES, aScale);
@@ -121,3 +122,5 @@ UIImage *Screenshot(float const aScale)
     
     return image;
 }
+
+#endif

@@ -1,6 +1,10 @@
 // Frequently used macros for uncluttering things (Import in your PCH)
-#import <pthread.h>
-#import <stdio.h>
+
+#ifndef _FCONV_H_
+#define _FCONV_H_
+
+#include <pthread.h>
+#include <stdio.h>
 
 #ifdef __OBJC__
 #   define _Log(prefix, format, ...) \
@@ -125,10 +129,11 @@
     })
 #endif
 
+#ifdef __OBJC__
+
 // iOS specific
-#if TARGET_OS_IPHONE && defined(__OBJC__)
-#   define WithDur UIView animateWithDuration // Use like: [WithDur:0.3
-                               //         animations:^{...}]
+#if TARGET_OS_IPHONE
+#   define WithDur UIView animateWithDuration // Use like: [WithDur:0.3 animations:^{...}]
 #   define RGBA(r,g,b,a) [UIColor colorWithRed:(r) green:(g) blue:(b) alpha:(a)]
 #   define HSBA(h,s,b,a) [UIColor colorWithHue:(h) saturation:(s) brightness:(b) alpha:(a)]
 #   define Device [UIDevice currentDevice]
@@ -136,19 +141,22 @@
 #   define SetVolume(vol) \
         [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
 #   define SevenOrNewer() \
-       ([[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] objectAtIndex:0] intValue] >= 7)
+        ([[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] objectAtIndex:0] intValue] >= 7)
 #else
 #   define RGBA(r,g,b,a) [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)]
+#   define HSBA(h,s,b,a) [NSColor colorWithCalibratedHue:(h) saturation:(s) brightness:(b) alpha:(a)]
 #endif
+
 #define RGB(r,g,b) RGBA((r), (g), (b), 1)
 #define HSB(h,s,b) HSBA((h), (s), (b), 1)
 #define GRAY(b) ({ __typeof(b) b_ = (b); RGB(b_,b_,b_); })
 
-#ifdef __OBJC__
-
 #pragma mark - Subscripts
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+
 @interface NSArray (Subscripts)
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;
 @end
@@ -156,10 +164,10 @@
 - (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
 @end
 
-@interface  NSDictionary (Subscripts)
+@interface NSDictionary (Subscripts)
 - (id)objectForKeyedSubscript:(id)key;
 @end
-@interface  NSMutableDictionary (Subscripts)
+@interface NSMutableDictionary (Subscripts)
 - (void)setObject:(id)obj forKeyedSubscript:(id)key;
 @end
 #endif
@@ -174,7 +182,13 @@
 - (void)setObject:(id)aObj forKeyedSubscript:(id)aKey;
 @end
 
-#pragma mark -
-@class UIImage;
-UIImage *Screenshot(float aScale);
+#pragma mark - Functions
+
+#if TARGET_OS_IPHONE
+#import <UIKit/UIImage.h>
+UIImage *FScreenshot(float aScale);
+#endif
+
+#endif
+
 #endif
