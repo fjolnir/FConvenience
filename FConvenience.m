@@ -63,6 +63,7 @@ UIImage *FScreenshot(float const aScale)
 
     CGContextRef const context = UIGraphicsGetCurrentContext();
 
+    UIGraphicsPushContext(context);
     for(UIWindow * const win in UIApp.windows)
     {
         if([win screen] == [UIScreen mainScreen]) {
@@ -73,11 +74,17 @@ UIImage *FScreenshot(float const aScale)
                                   -[win bounds].size.width * [[win layer] anchorPoint].x,
                                   -[win bounds].size.height * [[win layer] anchorPoint].y);
 
-            [[win layer] renderInContext:context];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+            if([win respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)])
+                [win drawViewHierarchyInRect:win.frame afterScreenUpdates:NO];
+            else
+#endif
+                [[win layer] renderInContext:context];
 
             CGContextRestoreGState(context);
         }
     }
+    UIGraphicsPopContext();
     const uint8_t * const pixels = CGBitmapContextGetData(context);
     
     size_t const bpr  = CGBitmapContextGetBytesPerRow(context);
