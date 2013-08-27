@@ -186,3 +186,4 @@
 @class UIImage;
 UIImage *FScreenshot(float aScale);
 #endif
+#endif
