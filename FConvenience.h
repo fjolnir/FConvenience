@@ -37,7 +37,7 @@
 #   define DEBUG_ON YES
 #   define CrashHere()   { *(int *)0 = 0xDEADBEEF; }
 #   define DebugLog(...) _Log("D ", ##__VA_ARGS__) // D: Debug
-#   define CheckOSErr(err, fmt, ...) _CheckOSErr(false, err, fmt, ##__VA_ARGS__)
+#   define CheckOSErr(err, fmt, ...) _CheckOSErr(true, err, fmt, ##__VA_ARGS__)
 #   define IfDebug(...) __VA_ARGS__
 #   define glError() do { \
         const char *errStr = NULL; \
@@ -182,13 +182,7 @@
 - (void)setObject:(id)aObj forKeyedSubscript:(id)aKey;
 @end
 
-#pragma mark - Functions
-
-#if TARGET_OS_IPHONE
-#import <UIKit/UIImage.h>
+#pragma mark -
+@class UIImage;
 UIImage *FScreenshot(float aScale);
-#endif
-
-#endif
-
 #endif
