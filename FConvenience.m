@@ -55,7 +55,7 @@
 @end
 
 
-UIImage *Screenshot(float const aScale)
+UIImage *FScreenshot(float const aScale)
 {
     CGSize const imageSize = [[UIScreen mainScreen] bounds].size;
     UIGraphicsBeginImageContextWithOptions(imageSize, YES, aScale);

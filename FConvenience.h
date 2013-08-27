@@ -176,5 +176,5 @@
 
 #pragma mark -
 @class UIImage;
-UIImage *Screenshot(float aScale);
+UIImage *FScreenshot(float aScale);
 #endif
