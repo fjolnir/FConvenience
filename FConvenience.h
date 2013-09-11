@@ -133,6 +133,11 @@
 
 // iOS specific
 #if TARGET_OS_IPHONE
+
+#    ifndef __IPHONE_7_0
+#        define __IPHONE_7_0 70000
+#    endif
+
 #   define WithDur UIView animateWithDuration // Use like: [WithDur:0.3 animations:^{...}]
 #   define RGBA(r,g,b,a) [UIColor colorWithRed:(r) green:(g) blue:(b) alpha:(a)]
 #   define HSBA(h,s,b,a) [UIColor colorWithHue:(h) saturation:(s) brightness:(b) alpha:(a)]
@@ -140,8 +145,21 @@
 #   define UIApp  [UIApplication sharedApplication]
 #   define SetVolume(vol) \
         [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
+#   define Running
 #   define SevenOrNewer() \
         ([[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] objectAtIndex:0] intValue] >= 7)
+// Runs a block of Code only if building using the iOS 7 SDK & running on iOS 7
+// (iOS 6 SDK build running on iOS 7 => does not get executed
+#   define IfIOS7(code...) IfIOS7Or(NO, #code)
+#   if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+#       define IfIOS7Or(extraCond, code...) \
+            if(SevenOrNewer() || (extraCond)) { code }
+#       define UnlessIOS7(code...) if(!SevenOrNewer()) { code }
+#   else
+#       define IfIOS7Or(extraConds, code...) if(0) {}
+#       define UnlessIOS7(code...) if(1) { code }
+#   endif
+
 #else
 #   define RGBA(r,g,b,a) [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)]
 #   define HSBA(h,s,b,a) [NSColor colorWithCalibratedHue:(h) saturation:(s) brightness:(b) alpha:(a)]
