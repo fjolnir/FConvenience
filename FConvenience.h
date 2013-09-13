@@ -6,6 +6,13 @@
 #include <pthread.h>
 #include <stdio.h>
 
+#ifdef __COREFOUNDATION_CFBASE__
+#define CF_AUTORELEASED __attribute__ ((cleanup(CFReleaseCleanup)))
+static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
+    CFRelease(*(CFTypeRef *)objPtr);
+}
+#endif
+
 #ifdef __OBJC__
 #   define _Log(prefix, format, ...) \
         fprintf(stderr, prefix "%s[%u] %10.15s:%u: %s\n", \
@@ -150,11 +157,10 @@
         ([[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] objectAtIndex:0] intValue] >= 7)
 // Runs a block of Code only if building using the iOS 7 SDK & running on iOS 7
 // (iOS 6 SDK build running on iOS 7 => does not get executed
-#   define IfIOS7(code...) IfIOS7Or(NO, #code)
 #   if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
-#       define IfIOS7Or(extraCond, code...) \
-            if(SevenOrNewer() || (extraCond)) { code }
-#       define UnlessIOS7(code...) if(!SevenOrNewer()) { code }
+#       define IfIOS7(code...)              if(SevenOrNewer()) { code }
+#       define IfIOS7Or(extraCond, code...) if(SevenOrNewer() || (extraCond)) { code }
+#       define UnlessIOS7(code...)          if(!SevenOrNewer()) { code }
 #   else
 #       define IfIOS7Or(extraConds, code...) if(0) {}
 #       define UnlessIOS7(code...) if(1) { code }
