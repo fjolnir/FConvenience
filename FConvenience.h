@@ -9,7 +9,8 @@
 #ifdef __COREFOUNDATION_CFBASE__
 #define CF_AUTORELEASED __attribute__ ((cleanup(CFReleaseCleanup)))
 static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
-    CFRelease(*(CFTypeRef *)objPtr);
+    if(*(CFTypeRef *)objPtr)
+        CFRelease(*(CFTypeRef *)objPtr);
 }
 #endif
 
