@@ -146,6 +146,11 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 #        define __IPHONE_7_0 70000
 #    endif
 
+#   define LetPath(__path, code...) ({ \
+        UIBezierPath *path = (__path); \
+        do { #code; } while(0); \
+        path; \
+    })
 #   define WithDur UIView animateWithDuration // Use like: [WithDur:0.3 animations:^{...}]
 #   define RGBA(r,g,b,a) [UIColor colorWithRed:(r) green:(g) blue:(b) alpha:(a)]
 #   define HSBA(h,s,b,a) [UIColor colorWithHue:(h) saturation:(s) brightness:(b) alpha:(a)]
@@ -163,18 +168,27 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 #       define IfIOS7Or(extraCond, code...) if(SevenOrNewer() || (extraCond)) { code }
 #       define UnlessIOS7(code...)          if(!SevenOrNewer()) { code }
 #   else
+#       define IfIOS7(code...)               if(0) {}
 #       define IfIOS7Or(extraConds, code...) if(0) {}
-#       define UnlessIOS7(code...) if(1) { code }
+#       define UnlessIOS7(code...)           if(1) { code }
 #   endif
 
 #else
 #   define RGBA(r,g,b,a) [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)]
 #   define HSBA(h,s,b,a) [NSColor colorWithCalibratedHue:(h) saturation:(s) brightness:(b) alpha:(a)]
+#   define LetPath(__path, code...) ({ \
+        NSBezierPath *path = (__path); \
+        do { #code; } while(0); \
+        path; \
+    })
 #endif
 
 #define RGB(r,g,b) RGBA((r), (g), (b), 1)
 #define HSB(h,s,b) HSBA((h), (s), (b), 1)
 #define GRAY(b) ({ __typeof(b) b_ = (b); RGB(b_,b_,b_); })
+
+#define StrokePath(__path, code...) [LetPath(__path, #code) stroke]
+#define FillPath(__path, code...) [LetPath(__path, #code) fill]
 
 #pragma mark - Subscripts
 
