@@ -148,7 +148,7 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 
 #   define LetPath(__path, code...) ({ \
         UIBezierPath *path = (__path); \
-        do { #code; } while(0); \
+        do { code; } while(0); \
         path; \
     })
 #   define WithDur UIView animateWithDuration // Use like: [WithDur:0.3 animations:^{...}]
