@@ -178,7 +178,7 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 #   define HSBA(h,s,b,a) [NSColor colorWithCalibratedHue:(h) saturation:(s) brightness:(b) alpha:(a)]
 #   define LetPath(__path, code...) ({ \
         NSBezierPath *path = (__path); \
-        do { #code; } while(0); \
+        do { code; } while(0); \
         path; \
     })
 #endif
@@ -187,8 +187,8 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 #define HSB(h,s,b) HSBA((h), (s), (b), 1)
 #define GRAY(b) ({ __typeof(b) b_ = (b); RGB(b_,b_,b_); })
 
-#define StrokePath(__path, code...) [LetPath(__path, #code) stroke]
-#define FillPath(__path, code...) [LetPath(__path, #code) fill]
+#define StrokePath(__path, code...) [LetPath(__path, code) stroke]
+#define FillPath(__path, code...) [LetPath(__path, code) fill]
 
 #pragma mark - Subscripts
 
