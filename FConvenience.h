@@ -167,9 +167,9 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 #   define UIApp  [UIApplication sharedApplication]
 #   define SetVolume(vol) \
         [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
-#   define Running
-#   define SevenOrNewer() \
-        ([[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] objectAtIndex:0] intValue] >= 7)
+
+#   define SevenOrNewer() (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
+
 // Runs a block of Code only if building using the iOS 7 SDK & running on iOS 7
 // (iOS 6 SDK build running on iOS 7 => does not get executed
 #   if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
