@@ -37,7 +37,7 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
     OSStatus __err = (error); \
     if(__err) { \
         Log(@"OSErr %d: " fmt, (int)__err, ##__VA_ARGS__); \
-        assert(!shouldAssert); \
+        assert(__err == noErr); \
     } \
 } while(0)
 
@@ -150,9 +150,13 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 
 // iOS specific
 #if TARGET_OS_IPHONE
+#include <UIKit/UIKit.h>
 
 #    ifndef __IPHONE_7_0
-#        define __IPHONE_7_0 70000
+#        define __IPHONE_7_0 (70000)
+#    endif
+#    ifndef NSFoundationVersionNumber_iOS_6_1
+#        define NSFoundationVersionNumber_iOS_6_1 (DBL_MAX)
 #    endif
 
 #   define LetPath(__path, code...) ({ \
