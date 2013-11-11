@@ -124,6 +124,8 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 #define POWOF2(n) ({ __typeof(n) __n = (n); (__n != 0) && !(__n & (__n - 1)); })
 
 #ifdef __OBJC__
+#include <Foundation/Foundation.h>
+
 #   define NotificationCenter [NSNotificationCenter defaultCenter]
 #   define Bundle        [NSBundle mainBundle]
 #   define Workspace     [NSWorkspace sharedWorkspace]
@@ -135,9 +137,16 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
         __typeof(x) __x = (x); \
         [[NSNull null] isEqual:__x] ? nil : __x; \
     })
-#endif
 
-#ifdef __OBJC__
+#define OVERLOADABLE __attribute((overloadable))
+static inline NSNumber * OVERLOADABLE FBox(char x)    { return @(x); }
+static inline NSNumber * OVERLOADABLE FBox(short x)   { return @(x); }
+static inline NSNumber * OVERLOADABLE FBox(int x)     { return @(x); }
+static inline NSNumber * OVERLOADABLE FBox(long x)    { return @(x); }
+static inline NSNumber * OVERLOADABLE FBox(float x)   { return @(x); }
+static inline NSNumber * OVERLOADABLE FBox(double x)  { return @(x); }
+static inline NSString * OVERLOADABLE FBox(char *x)   { return @(x); }
+static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWithRange:x]; }
 
 // iOS specific
 #if TARGET_OS_IPHONE
@@ -173,6 +182,21 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 #       define UnlessIOS7(code...)           if(1) { code }
 #   endif
 
+    static inline NSValue * OVERLOADABLE FBox(CGRect x)            { return [NSValue valueWithCGRect:x]; }
+    static inline NSValue * OVERLOADABLE FBox(CGPoint x)           { return [NSValue valueWithCGPoint:x]; }
+    static inline NSValue * OVERLOADABLE FBox(CGSize x)            { return [NSValue valueWithCGSize:x]; }
+    static inline NSValue * OVERLOADABLE FBox(CGAffineTransform x) { return [NSValue valueWithCGAffineTransform:x]; }
+
+    static inline NSValue * OVERLOADABLE FBox(UIOffset x)          { return [NSValue valueWithUIOffset:x]; }
+#   ifdef CMTIMERANGE_H
+        static inline NSValue * OVERLOADABLE FBox(CMTimeRange x)   { return [NSValue valueWithCMTimeRange:x]; }
+        static inline NSValue * OVERLOADABLE FBox(CMTimeMapping x) { return [NSValue valueWithCMTimeMapping:x]; }
+#   endif
+#   ifdef __CORELOCATION__
+        static inline NSValue * OVERLOADABLE FBox(CLLocationCoordinate2D x) { return [NSValue valueWithMKCoordinate:x]; }
+        static inline NSValue * OVERLOADABLE FBox(MKCoordinateSpan x)       { return [NSValue valueWithMKCoordinateSpan:x]; }
+#   endif
+
 #else
 #   define RGBA(r,g,b,a) [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)]
 #   define HSBA(h,s,b,a) [NSColor colorWithCalibratedHue:(h) saturation:(s) brightness:(b) alpha:(a)]
@@ -181,6 +205,9 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
         do { code; } while(0); \
         path; \
     })
+    static inline NSValue * OVERLOADABLE FBox(NSRect x)  { return [NSValue valueWithRect:x]; }
+    static inline NSValue * OVERLOADABLE FBox(NSPoint x) { return [NSValue valueWithPoint:x]; }
+    static inline NSValue * OVERLOADABLE FBox(NSSize x)  { return [NSValue valueWithSize:x]; }
 #endif
 
 #define RGB(r,g,b) RGBA((r), (g), (b), 1)
@@ -225,4 +252,6 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 @class UIImage;
 UIImage *FScreenshot(float aScale);
 #endif
+
+#undef OVERLOADABLE
 #endif
