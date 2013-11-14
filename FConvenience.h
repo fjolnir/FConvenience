@@ -169,6 +169,8 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 #   define HSBA(h,s,b,a) [UIColor colorWithHue:(h) saturation:(s) brightness:(b) alpha:(a)]
 #   define Device [UIDevice currentDevice]
 #   define UIApp  [UIApplication sharedApplication]
+#   define UIAppGoSlowmo() [[[[[UIApplication sharedApplication] windows] objectAtIndex:0] layer] setSpeed:.1f]
+
 #   define SetVolume(vol) \
         [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
 
