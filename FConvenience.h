@@ -6,6 +6,21 @@
 #include <pthread.h>
 #include <stdio.h>
 
+#ifdef __LP64__
+    typedef float FFloat;
+#else
+    typedef double FFloat;
+#endif
+
+typedef struct _FFloatRange {
+    FFloat location, length;
+} FFloatRange;
+
+static inline FFloat FFloatRangeMax(FFloatRange const aRange) {
+    return aRange.location + aRange.length;
+}
+
+
 #ifdef __COREFOUNDATION_CFBASE__
 #define CF_AUTORELEASED __attribute__ ((cleanup(CFReleaseCleanup)))
 static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
