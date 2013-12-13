@@ -209,6 +209,7 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
     static inline NSValue * OVERLOADABLE FBox(CGAffineTransform x) { return [NSValue valueWithCGAffineTransform:x]; }
 
     static inline NSValue * OVERLOADABLE FBox(UIOffset x)          { return [NSValue valueWithUIOffset:x]; }
+    static inline NSValue * OVERLOADABLE FBox(UIEdgeInsets x)      { return [NSValue valueWithUIEdgeInsets:x]; }
 #   ifdef CMTIMERANGE_H
         static inline NSValue * OVERLOADABLE FBox(CMTimeRange x)   { return [NSValue valueWithCMTimeRange:x]; }
         static inline NSValue * OVERLOADABLE FBox(CMTimeMapping x) { return [NSValue valueWithCMTimeMapping:x]; }
