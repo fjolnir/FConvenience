@@ -145,7 +145,7 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 #define POWOF2(n) ({ __typeof(n) __n = (n); (__n != 0) && !(__n & (__n - 1)); })
 
 #ifdef __OBJC__
-#include <Foundation/Foundation.h>
+#import <Foundation/Foundation.h>
 
 #   define NotificationCenter [NSNotificationCenter defaultCenter]
 #   define Bundle        [NSBundle mainBundle]
