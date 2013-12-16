@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <stdio.h>
 
-#ifdef __LP64__
+#if defined(TARGET_OS_IPHONE) && !FCONVENIENCE_USE_DOUBLE
     typedef float FFloat;
 #else
     typedef double FFloat;
