@@ -20,7 +20,6 @@ static inline FFloat FFloatRangeMax(FFloatRange const aRange) {
     return aRange.location + aRange.length;
 }
 
-
 #ifdef __COREFOUNDATION_CFBASE__
 #define CF_AUTORELEASED __attribute__ ((cleanup(CFReleaseCleanup)))
 static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
@@ -111,6 +110,13 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 
 #define unless(...) if(!(__VA_ARGS__))
 #define until(...)  while(!(__VA_ARGS__))
+
+
+#define Memoize(x...) ({ \
+    static __typeof(x) __memoized_x; \
+    Once(^{ __memoized_x = (x); }); \
+    __memoized_x; \
+})
 
 #ifndef MIN
 #   define MIN(a,b) ({ \
