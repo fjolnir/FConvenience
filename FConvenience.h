@@ -181,7 +181,7 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 #    endif
 
 #   define LetPath(__path, code...) ({ \
-        UIBezierPath *path = (__path); \
+        UIBezierPath * const path = (__path); \
         do { code; } while(0); \
         path; \
     })
