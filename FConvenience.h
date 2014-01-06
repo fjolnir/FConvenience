@@ -113,8 +113,8 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 
 
 #define Memoize(x...) ({ \
-    static __typeof(x) __memoized_x; \
-    Once(^{ __memoized_x = (x); }); \
+    static __typeof(({ x; })) __memoized_x; \
+    Once(^{ __memoized_x = ({ x; }); }); \
     __memoized_x; \
 })
 
