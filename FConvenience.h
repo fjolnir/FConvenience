@@ -229,7 +229,7 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 #   define RGBA(r,g,b,a) [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)]
 #   define HSBA(h,s,b,a) [NSColor colorWithCalibratedHue:(h) saturation:(s) brightness:(b) alpha:(a)]
 #   define LetPath(__path, code...) ({ \
-        NSBezierPath *path = (__path); \
+        NSBezierPath * const path = (__path); \
         do { code; } while(0); \
         path; \
     })
