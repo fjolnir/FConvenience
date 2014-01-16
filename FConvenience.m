@@ -1,5 +1,4 @@
 #import "FConvenience.h"
-#import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
