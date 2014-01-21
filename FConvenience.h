@@ -172,6 +172,7 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 // iOS specific
 #if TARGET_OS_IPHONE
 #include <UIKit/UIKit.h>
+#include <MediaPlayer/MPMusicPlayerController.h>
 
 #    ifndef __IPHONE_7_0
 #        define __IPHONE_7_0 (70000)
