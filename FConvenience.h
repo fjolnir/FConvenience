@@ -3,121 +3,24 @@
 #ifndef _FCONV_H_
 #define _FCONV_H_
 
+#pragma mark - C -
+
 #include <pthread.h>
 #include <stdio.h>
 
-#if defined(TARGET_OS_IPHONE) && !FCONVENIENCE_USE_DOUBLE
-    typedef float FFloat;
-#else
-    typedef double FFloat;
-#endif
-
-typedef struct _FFloatRange {
-    FFloat location, length;
-} FFloatRange;
-
-static inline FFloat FFloatRangeMax(FFloatRange const aRange) {
-    return aRange.location + aRange.length;
-}
-
-#ifdef __COREFOUNDATION_CFBASE__
-#define CF_AUTORELEASED __attribute__ ((cleanup(CFReleaseCleanup)))
-static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
-    if(*(CFTypeRef *)objPtr)
-        CFRelease(*(CFTypeRef *)objPtr);
-}
-#endif
-
-#ifdef __OBJC__
-#   define _Log(prefix, format, ...) \
-        fprintf(stderr, prefix "%s[%u] %10.15s:%u: %s\n", \
-        [[[NSProcessInfo processInfo] processName] UTF8String], \
-        getpid(),\
-        __FILE__, __LINE__, \
-        [[NSString stringWithFormat:format, ##__VA_ARGS__] UTF8String])
-
-#   define UIIdiomString() ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? @"ipad" : @"iphone")
-#   define DeviceIsIPad() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-#else
-#   define _Log(prefix, format, ...) \
-        fprintf(stderr, prefix "%10.15s:%u: " format "\n", \
-        __FILE__, __LINE__, \
-        ##__VA_ARGS__)
-#endif
-
-#define Log(...) _Log("V ", ##__VA_ARGS__) // V: Verbose
-
-#define _CheckOSErr(shouldAssert, error, fmt, ...) do { \
-    OSStatus __err = (error); \
-    if(__err) { \
-        Log(@"OSErr %d: " fmt, (int)__err, ##__VA_ARGS__); \
-        assert(__err == noErr); \
-    } \
-} while(0)
-
+#pragma mark Debug Utils
 #ifdef DEBUG
 #   define DEBUG_ON YES
 #   define CrashHere()   { *(int *)0 = 0xDEADBEEF; }
-#   define DebugLog(...) _Log("D ", ##__VA_ARGS__) // D: Debug
-#   define CheckOSErr(err, fmt, ...) _CheckOSErr(true, err, fmt, ##__VA_ARGS__)
-#   define IfDebug(...) __VA_ARGS__
-#   define glError() do { \
-        const char *errStr = NULL; \
-        GLenum err; \
-        while((err = glGetError()) != GL_NO_ERROR) { \
-            switch(err) { \
-                case GL_INVALID_ENUM:      errStr = "GL_INVALID_ENUM";      break; \
-                case GL_INVALID_VALUE:     errStr = "GL_INVALID_VALUE";     break; \
-                case GL_OUT_OF_MEMORY:     errStr = "GL_OUT_OF_MEMORY";     break; \
-                case GL_INVALID_OPERATION: errStr = "GL_INVALID_OPERATION"; break; \
-                case GL_INVALID_FRAMEBUFFER_OPERATION: \
-                    errStr = "GL_INVALID_FRAMEBUFFER_OPERATION"; break; \
-                default: errStr = "UNKNOWN"; \
-            } \
-            DebugLog(@"glError(0x%04x): %s caught at %s:%u\n", \
-                     err, errStr, __FILE__, __LINE__); \
-        } \
-        NSCAssert(errStr == NULL, @"OpenGL Error"); \
-    } while(0)
 #else
 #   define DEBUG_ON NO
 #   define CrashHere()
-#   define DebugLog(...)
-#   define CheckOSErr(err, fmt, ...) _CheckOSErr(false, err, fmt, ##__VA_ARGS__)
-#   define IfDebug(...)
-#   define glError()
 #endif
 
-#define GlobalQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-#define MainQueue dispatch_get_main_queue()
+#define unless(body...) if(!(body))
+#define until(body...)  while(!(body))
 
-#define Once(...) do { \
-    static dispatch_once_t __token; \
-    dispatch_once(&__token, ##__VA_ARGS__); \
-} while(0)
-#define Async(...) dispatch_async(GlobalQueue, ##__VA_ARGS__)
-#define AsyncOnMain(...) dispatch_async(MainQueue, ##__VA_ARGS__)
-#define SyncOnMain(...) do { \
-    dispatch_block_t const __blk = __VA_ARGS__; \
-    if(pthread_main_np()) \
-        __blk(); \
-    else \
-        dispatch_sync(MainQueue, __blk); \
-} while(0)
-#define AfterDelay(seconds, ...) \
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds) * NSEC_PER_SEC), \
-                   MainQueue, ##__VA_ARGS__)
-
-#define unless(...) if(!(__VA_ARGS__))
-#define until(...)  while(!(__VA_ARGS__))
-
-
-#define Memoize(x...) ({ \
-    static __typeof(({ x; })) __memoized_x; \
-    Once(^{ __memoized_x = ({ x; }); }); \
-    __memoized_x; \
-})
-
+#pragma mark Numerical Ranges
 #ifndef MIN
 #   define MIN(a,b) ({ \
         __typeof(a) const __a = (a); \
@@ -144,21 +47,130 @@ static inline void CFReleaseCleanup(CF_CONSUMED void *objPtr) {
 })
 #define POWOF2(n) ({ __typeof(n) __n = (n); (__n != 0) && !(__n & (__n - 1)); })
 
+#if defined(TARGET_OS_IPHONE) && !FCONVENIENCE_USE_DOUBLE
+    typedef float FFloat;
+#else
+    typedef double FFloat;
+#endif
+
+typedef struct _FFloatRange {
+    FFloat location, length;
+} FFloatRange;
+
+static inline FFloat FFloatRangeMax(FFloatRange const aRange) {
+    return aRange.location + aRange.length;
+}
+
+
+#pragma mark GCD Utilities
+#if __has_extension(blocks)
+#   define GlobalQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+#   define MainQueue dispatch_get_main_queue()
+
+#   define Once(body...) do { \
+        static dispatch_once_t __token; \
+        dispatch_once(&__token, ##body); \
+    } while(0)
+#   define Async(body...) dispatch_async(GlobalQueue, ##body)
+#   define AsyncOnMain(body...) dispatch_async(MainQueue, ##body)
+#   define SyncOnMain(body...) do { \
+    dispatch_block_t const __blk = body; \
+    if(pthread_main_np()) \
+        __blk(); \
+    else \
+        dispatch_sync(MainQueue, __blk); \
+    } while(0)
+#   define AfterDelay(seconds, body...) \
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds) * NSEC_PER_SEC), \
+        MainQueue, ##body)
+
+#   define Memoize(x...) ({ \
+        static __typeof(({ x; })) __memoized_x; \
+        Once(^{ __memoized_x = ({ x; }); }); \
+        __memoized_x; \
+    })
+#endif
+
+
+#pragma mark - Objective-C -
 #ifdef __OBJC__
 #import <Foundation/Foundation.h>
+#if TARGET_OS_IPHONE
+#   include <UIKit/UIKit.h>
+#endif
 
-#   define NotificationCenter [NSNotificationCenter defaultCenter]
-#   define Bundle        [NSBundle mainBundle]
-#   define Workspace     [NSWorkspace sharedWorkspace]
-#   define FileManager   [NSFileManager defaultManager]
-#   define Defaults      [NSUserDefaults standardUserDefaults]
-#   define NSFormat(...) [NSString stringWithFormat:__VA_ARGS__]
-#   define FetchReq(name) [NSFetchRequest fetchRequestWithEntityName:(name)]
-#   define NSNullToNil(x) ({ \
-        __typeof(x) __x = (x); \
-        [[NSNull null] isEqual:__x] ? nil : __x; \
-    })
 
+#pragma mark Logging
+enum FLogLevel {
+    FLogLevel_Emergency,
+    FLogLevel_Alert,
+    FLogLevel_Critical,
+    FLogLevel_Err,
+    FLogLevel_Warning,
+    FLogLevel_Notice
+};
+
+void _FLog(enum FLogLevel aLevel,
+           const char * aFile,
+           int aLine,
+           NSString *aFormat, ...) NS_FORMAT_FUNCTION(4,5);
+#define Log(lvl, msg...)   _FLog((lvl), __FILE__, __LINE__, ##msg)
+#define LogError(msg...)   Log(FLogLevel_Err, ##msg)
+#define LogWarning(msg...) Log(FLogLevel_Warning, ##msg)
+#define LogNotice(msg...)  Log(FLogLevel_Notice, ##msg)
+
+#define _CheckOSErr(shouldAssert, error, fmt, params...) do { \
+    OSStatus __err = (error); \
+    if(__err) { \
+        LogError(@"OSErr %d: " fmt, (int)__err, ##params); \
+        assert(__err == noErr); \
+    } \
+} while(0)
+
+#ifdef DEBUG
+#   define CheckOSErr(err, fmt, params...) _CheckOSErr(true, err, fmt, ##params)
+#   define glError() do { \
+        const char *errStr = NULL; \
+        GLenum err; \
+        while((err = glGetError()) != GL_NO_ERROR) { \
+            switch(err) { \
+                case GL_INVALID_ENUM:      errStr = "GL_INVALID_ENUM";      break; \
+                case GL_INVALID_VALUE:     errStr = "GL_INVALID_VALUE";     break; \
+                case GL_OUT_OF_MEMORY:     errStr = "GL_OUT_OF_MEMORY";     break; \
+                case GL_INVALID_OPERATION: errStr = "GL_INVALID_OPERATION"; break; \
+                case GL_INVALID_FRAMEBUFFER_OPERATION: \
+                    errStr = "GL_INVALID_FRAMEBUFFER_OPERATION"; break; \
+                default: errStr = "UNKNOWN"; \
+            } \
+            LogError(@"glError(0x%04x): %s caught at %s:%u\n", \
+                     err, errStr, __FILE__, __LINE__); \
+        } \
+        NSCAssert(errStr == NULL, @"OpenGL Error"); \
+    } while(0)
+#else
+#   define CheckOSErr(err, fmt, params...) _CheckOSErr(false, err, fmt, ##params)
+#   define glError()
+#endif
+
+#pragma mark Shorthands
+#define NotificationCenter [NSNotificationCenter defaultCenter]
+#define Bundle             [NSBundle mainBundle]
+#define Workspace          [NSWorkspace sharedWorkspace]
+#define FileManager        [NSFileManager defaultManager]
+#define Defaults           [NSUserDefaults standardUserDefaults]
+#define NSFormat(fmt...)   [NSString stringWithFormat:fmt]
+#define FetchReq(name)     [NSFetchRequest fetchRequestWithEntityName:(name)]
+#define NSNullToNil(x) ({ \
+    __typeof(x) __x = (x); \
+    [[NSNull null] isEqual:__x] ? nil : __x; \
+})
+#if TARGET_OS_IPHONE
+#   define Device [UIDevice currentDevice]
+#   define UIApp  [UIApplication sharedApplication]
+#endif
+
+
+#pragma mark Boxing
 #define OVERLOADABLE __attribute((overloadable))
 static inline NSNumber * OVERLOADABLE FBox(char x)    { return @(x); }
 static inline NSNumber * OVERLOADABLE FBox(short x)   { return @(x); }
@@ -168,47 +180,7 @@ static inline NSNumber * OVERLOADABLE FBox(float x)   { return @(x); }
 static inline NSNumber * OVERLOADABLE FBox(double x)  { return @(x); }
 static inline NSString * OVERLOADABLE FBox(char *x)   { return @(x); }
 static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWithRange:x]; }
-
-// iOS specific
 #if TARGET_OS_IPHONE
-#include <UIKit/UIKit.h>
-
-#    ifndef __IPHONE_7_0
-#        define __IPHONE_7_0 (70000)
-#    endif
-#    ifndef NSFoundationVersionNumber_iOS_6_1
-#        define NSFoundationVersionNumber_iOS_6_1 (DBL_MAX)
-#    endif
-
-#   define LetPath(__path, code...) ({ \
-        UIBezierPath * const path = (__path); \
-        do { code; } while(0); \
-        path; \
-    })
-#   define WithDur UIView animateWithDuration // Use like: [WithDur:0.3 animations:^{...}]
-#   define RGBA(r,g,b,a) [UIColor colorWithRed:(r) green:(g) blue:(b) alpha:(a)]
-#   define HSBA(h,s,b,a) [UIColor colorWithHue:(h) saturation:(s) brightness:(b) alpha:(a)]
-#   define Device [UIDevice currentDevice]
-#   define UIApp  [UIApplication sharedApplication]
-#   define UIAppGoSlowmo() [[[[[UIApplication sharedApplication] windows] objectAtIndex:0] layer] setSpeed:.1f]
-
-#   define SetVolume(vol) \
-        [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
-
-#   define SevenOrNewer() (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
-
-// Runs a block of Code only if building using the iOS 7 SDK & running on iOS 7
-// (iOS 6 SDK build running on iOS 7 => does not get executed
-#   if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
-#       define IfIOS7(code...)              if(SevenOrNewer()) { code }
-#       define IfIOS7Or(extraCond, code...) if(SevenOrNewer() || (extraCond)) { code }
-#       define UnlessIOS7(code...)          if(!SevenOrNewer()) { code }
-#   else
-#       define IfIOS7(code...)               if(0) {}
-#       define IfIOS7Or(extraConds, code...) if(0) {}
-#       define UnlessIOS7(code...)           if(1) { code }
-#   endif
-
     static inline NSValue * OVERLOADABLE FBox(CGRect x)            { return [NSValue valueWithCGRect:x]; }
     static inline NSValue * OVERLOADABLE FBox(CGPoint x)           { return [NSValue valueWithCGPoint:x]; }
     static inline NSValue * OVERLOADABLE FBox(CGSize x)            { return [NSValue valueWithCGSize:x]; }
@@ -224,28 +196,81 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
         static inline NSValue * OVERLOADABLE FBox(CLLocationCoordinate2D x) { return [NSValue valueWithMKCoordinate:x]; }
         static inline NSValue * OVERLOADABLE FBox(MKCoordinateSpan x)       { return [NSValue valueWithMKCoordinateSpan:x]; }
 #   endif
-
 #else
-#   define RGBA(r,g,b,a) [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)]
-#   define HSBA(h,s,b,a) [NSColor colorWithCalibratedHue:(h) saturation:(s) brightness:(b) alpha:(a)]
-#   define LetPath(__path, code...) ({ \
-        NSBezierPath * const path = (__path); \
-        do { code; } while(0); \
-        path; \
-    })
     static inline NSValue * OVERLOADABLE FBox(NSRect x)  { return [NSValue valueWithRect:x]; }
     static inline NSValue * OVERLOADABLE FBox(NSPoint x) { return [NSValue valueWithPoint:x]; }
     static inline NSValue * OVERLOADABLE FBox(NSSize x)  { return [NSValue valueWithSize:x]; }
 #endif
+#undef OVERLOADABLE
 
+
+#pragma mark Device Detection (iOS)
+#if TARGET_OS_IPHONE
+#   define UIIdiomString() ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? @"ipad" : @"iphone")
+#   define DeviceIsIPad() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+
+#    define iOS Version Detection
+#    ifndef __IPHONE_7_0
+#        define __IPHONE_7_0 (70000)
+#    endif
+#    ifndef NSFoundationVersionNumber_iOS_6_1
+#        define NSFoundationVersionNumber_iOS_6_1 (DBL_MAX)
+#    endif
+
+#   define SevenOrNewer() (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
+
+// Runs a block of Code only if building using the iOS 7 SDK & running on iOS 7
+// (iOS 6 SDK build running on iOS 7 => does not get executed
+#   if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+#       define IfIOS7(body...)              if(SevenOrNewer()) { body }
+#       define IfIOS7Or(extraCond, body...) if(SevenOrNewer() || (extraCond)) { body }
+#       define UnlessIOS7(body...)          if(!SevenOrNewer()) { body }
+#   else
+#       define IfIOS7(body...)               if(0) {}
+#       define IfIOS7Or(extraConds, body...) if(0) {}
+#       define UnlessIOS7(body...)           if(1) { body }
+#   endif
+#endif
+
+
+#pragma mark Drawing Utils
+#if TARGET_OS_IPHONE
+#   define LetPath(__path, body...) ({ \
+        UIBezierPath * const path = (__path); \
+        do { body; } while(0); \
+        path; \
+    })
+#   define RGBA(r,g,b,a) [UIColor colorWithRed:(r) green:(g) blue:(b) alpha:(a)]
+#   define HSBA(h,s,b,a) [UIColor colorWithHue:(h) saturation:(s) brightness:(b) alpha:(a)]
+#else
+#   define RGBA(r,g,b,a) [NSColor colorWithCalibratedRed:(r) green:(g) blue:(b) alpha:(a)]
+#   define HSBA(h,s,b,a) [NSColor colorWithCalibratedHue:(h) saturation:(s) brightness:(b) alpha:(a)]
+#   define LetPath(__path, body...) ({ \
+        NSBezierPath * const path = (__path); \
+        do { body; } while(0); \
+        path; \
+    })
+#endif
 #define RGB(r,g,b) RGBA((r), (g), (b), 1)
 #define HSB(h,s,b) HSBA((h), (s), (b), 1)
 #define GRAY(b) ({ __typeof(b) b_ = (b); RGB(b_,b_,b_); })
 
-#define StrokePath(__path, code...) [LetPath(__path, code) stroke]
-#define FillPath(__path, code...) [LetPath(__path, code) fill]
+#define StrokePath(__path, body...) [LetPath(__path, body) stroke]
+#define FillPath(__path, body...) [LetPath(__path, body) fill]
 
-#pragma mark - Subscripts
+
+#pragma mark Animation Utils
+#if TARGET_OS_IPHONE
+#   define WithDur UIView animateWithDuration // Use like: [WithDur:0.3 animations:^{...}]
+#   define UIAppGoSlowmo() [[[[[UIApplication sharedApplication] windows] objectAtIndex:0] layer] setSpeed:.1f]
+#endif
+#   define SetVolume(vol) \
+        [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
+
+    UIImage *FScreenshot(float aScale);
+
+
+#pragma mark Subscripts
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 #import <Foundation/NSArray.h>
@@ -276,10 +301,5 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 - (void)setObject:(id)aObj forKeyedSubscript:(id)aKey;
 @end
 
-#pragma mark -
-@class UIImage;
-UIImage *FScreenshot(float aScale);
-#endif
-
-#undef OVERLOADABLE
-#endif
+#endif // __OBJC__
+#endif // _FCONV_H_
