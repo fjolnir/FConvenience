@@ -31,9 +31,12 @@ void _FLog(enum FLogLevel const aLevel,
                                                       arguments:argList];
     va_end(argList);
     
-    asl_log(client, NULL, aLevel,
+    aslmsg const msg = asl_new(ASL_TYPE_MSG);
+    asl_set(msg, ASL_KEY_READ_UID, "-1");
+    asl_log(client, msg, aLevel,
             "%10.15s:%u: %s",
-            aFile, aLine, [message UTF8String]);
+            [[@(aFile) lastPathComponent] UTF8String], aLine, [message UTF8String]);
+    asl_free(msg);
 }
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
