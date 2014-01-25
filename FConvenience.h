@@ -23,23 +23,23 @@
 #pragma mark Numerical Ranges
 #ifndef MIN
 #   define MIN(a,b) ({ \
-        __typeof(a) const __a = (a); \
-        __typeof(b) const __b = (b); \
-        __a > __b ? __b : __a; \
+        __typeof(a) const __min_a = (a); \
+        __typeof(a) const __min_b = (b); \
+        __min_a > __min_b ? __min_b : __min_a; \
     })
 #endif
 #ifndef MAX
 #   define MAX(a,b) ({ \
-        __typeof(a) const __a = (a); \
-        __typeof(b) const __b = (b); \
-        __a > __b ? __a : __b; \
+        __typeof(a) const __max_a = (a); \
+        __typeof(a) const __max_b = (b); \
+        __max_a > __max_b ? __max_a : __max_b; \
     })
 #endif
 
 #define CLAMP(val, min, max) MAX((min), MIN((val), (max)))
 #define BETWEEN(val, low, high) ({ \
     __typeof(val) const __val = (val); \
-    __val > (low) && __val < (high); \
+    __val > (__typeof(val))(low) && __val < (__typeof(val))(high); \
 })
 #define INRANGE(val, low, high) ({ \
     __typeof(val) const __val = (val); \
