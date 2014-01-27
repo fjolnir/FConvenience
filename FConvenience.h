@@ -21,30 +21,43 @@
 #define until(body...)  while(!(body))
 
 #pragma mark Numerical Ranges
+
+#define PASTE(a,b) a##b
 #ifndef MIN
-#   define MIN(a,b) ({ \
-        __typeof(a) const __min_a = (a); \
-        __typeof(a) const __min_b = (b); \
-        __min_a > __min_b ? __min_b : __min_a; \
+#   define __MIN(a,b,c) ({ \
+        __typeof(a) const PASTE(__a,c) = (a); \
+        __typeof(b) const PASTE(__b,c) = (b); \
+        (__typeof(a))(PASTE(__a,c) > PASTE(__b,c) ? PASTE(__b,c) : PASTE(__a,c)); \
     })
+#   define MIN(a,b) __MIN((a), (b), __COUNTER__)
 #endif
 #ifndef MAX
-#   define MAX(a,b) ({ \
-        __typeof(a) const __max_a = (a); \
-        __typeof(a) const __max_b = (b); \
-        __max_a > __max_b ? __max_a : __max_b; \
+#   define __MAX(a,b,c) ({ \
+        __typeof(a) const PASTE(__a,c) = (a); \
+        __typeof(b) const PASTE(__b,c) = (b); \
+        PASTE(__a,c) > PASTE(__b,c) ? PASTE(__a,c) : PASTE(__b,c); \
     })
+#   define MAX(a,b) __MAX((a), (b), __COUNTER__)
 #endif
 
-#define CLAMP(val, min, max) MAX((min), MIN((val), (max)))
-#define BETWEEN(val, low, high) ({ \
-    __typeof(val) const __val = (val); \
-    __val > (__typeof(val))(low) && __val < (__typeof(val))(high); \
-})
-#define INRANGE(val, low, high) ({ \
-    __typeof(val) const __val = (val); \
-    __val >= (low) && __val <= (high); \
-})
+#ifndef BETWEEN
+#   define __BETWEEN(val, low, high, c) ({ \
+        __typeof(val) const PASTE(__val,c) = (val); \
+        PASTE(__val,c) > (low) && PASTE(__val,c) < (high); \
+    })
+#   define BETWEEN(a,b,c) __BETWEEN((a), (b), (c), __COUNTER__)
+#endif
+#ifndef INRANGE
+#   define __INRANGE(val, low, high, c) ({ \
+        __typeof(val) const PASTE(__val,c) = (val); \
+        PASTE(__val,c) >= (low) && PASTE(__val,c) <= (high); \
+    })
+#   define INRANGE(a,b,c) __INRANGE((a), (b), (c), __COUNTER__)
+#endif
+#ifndef CLAMP
+#   define CLAMP(val, min, max) MAX((min), MIN((val), (max)))
+#endif
+
 #define POWOF2(n) ({ __typeof(n) __n = (n); (__n != 0) && !(__n & (__n - 1)); })
 
 #if defined(TARGET_OS_IPHONE) && !FCONVENIENCE_USE_DOUBLE
