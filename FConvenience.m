@@ -25,6 +25,11 @@ void _FLog(enum FLogLevel const aLevel,
 #endif
     }
     
+#ifndef DEBUG
+    // For some reason, asl_set_filter isn't doing its job.. so for now I'm just
+    // not logging anything above warning in production builds
+    if(aLevel <= ASL_LEVEL_WARNING) {
+#endif
     va_list argList;
     va_start(argList, aFormat);
     NSString * const message = [[NSString alloc] initWithFormat:aFormat
@@ -37,6 +42,9 @@ void _FLog(enum FLogLevel const aLevel,
             "%10.15s:%u: %s",
             [[@(aFile) lastPathComponent] UTF8String], aLine, [message UTF8String]);
     asl_free(msg);
+#ifndef DEBUG
+    }
+#endif
 }
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
