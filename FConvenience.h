@@ -166,13 +166,14 @@ void _FLog(enum FLogLevel aLevel,
 #endif
 
 #pragma mark Shorthands
-#define NotificationCenter [NSNotificationCenter defaultCenter]
-#define Bundle             [NSBundle mainBundle]
-#define Workspace          [NSWorkspace sharedWorkspace]
-#define FileManager        [NSFileManager defaultManager]
-#define Defaults           [NSUserDefaults standardUserDefaults]
-#define NSFormat(fmt...)   [NSString stringWithFormat:fmt]
-#define FetchReq(name)     [NSFetchRequest fetchRequestWithEntityName:(name)]
+#define NotificationCenter      [NSNotificationCenter defaultCenter]
+#define Bundle                  [NSBundle mainBundle]
+#define Workspace               [NSWorkspace sharedWorkspace]
+#define FileManager             [NSFileManager defaultManager]
+#define Defaults                [NSUserDefaults standardUserDefaults]
+#define NSFormat(fmt...)        [NSString stringWithFormat:fmt]
+#define NSMutableFormat(fmt...) [NSMutableString stringWithFormat:fmt]
+#define FetchReq(name)          [NSFetchRequest fetchRequestWithEntityName:(name)]
 #define NSNullToNil(x) ({ \
     __typeof(x) __x = (x); \
     [[NSNull null] isEqual:__x] ? nil : __x; \
