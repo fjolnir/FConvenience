@@ -74,6 +74,22 @@ static inline FFloat FFloatRangeMax(FFloatRange const aRange) {
     return aRange.location + aRange.length;
 }
 
+#if CGFLOAT_IS_DOUBLE
+#    define CGFLOAT_EPSILON DBL_EPSILON
+#    define cgfabs fabs
+#else
+#    define CGFLOAT_EPSILON FLT_EPSILON
+#    define cgfabs fabsf
+#endif
+
+#define _NSCompare(x, y, c) ({ \
+    __typeof(x) PASTE(__x,c) = (x); \
+    __typeof(y) PASTE(__y,c) = (y); \
+      PASTE(__x,c) > PASTE(__y,c) ? NSOrderedDescending \
+    : PASTE(__x,c) < PASTE(__y,c) ? NSOrderedAscending \
+                                  : NSOrderedSame; \
+})
+#define NSCompare(x,y) _NSCompare((x), (y), __COUNTER__)
 
 #pragma mark GCD Utilities
 #if __has_extension(blocks)
