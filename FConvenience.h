@@ -293,11 +293,11 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 #if TARGET_OS_IPHONE
 #   define WithDur UIView animateWithDuration // Use like: [WithDur:0.3 animations:^{...}]
 #   define UIAppGoSlowmo() [[[[[UIApplication sharedApplication] windows] objectAtIndex:0] layer] setSpeed:.1f]
-#endif
 #   define SetVolume(vol) \
         [[MPMusicPlayerController applicationMusicPlayer] setVolume:(vol)];
 
     UIImage *FScreenshot(float aScale);
+#endif
 
 
 #pragma mark Subscripts
