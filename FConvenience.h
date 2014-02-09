@@ -45,14 +45,14 @@
         __typeof(val) const PASTE(__val,c) = (val); \
         PASTE(__val,c) > (low) && PASTE(__val,c) < (high); \
     })
-#   define BETWEEN(a,b,c) __BETWEEN((a), (b), (c), __COUNTER__)
+#   define BETWEEN(val, low, high) __BETWEEN((val), (low), (high), __COUNTER__)
 #endif
 #ifndef INRANGE
 #   define __INRANGE(val, low, high, c) ({ \
         __typeof(val) const PASTE(__val,c) = (val); \
         PASTE(__val,c) >= (low) && PASTE(__val,c) <= (high); \
     })
-#   define INRANGE(a,b,c) __INRANGE((a), (b), (c), __COUNTER__)
+#   define INRANGE(val, low, high) __INRANGE((val), (low), (high), __COUNTER__)
 #endif
 #ifndef CLAMP
 #   define CLAMP(val, min, max) MAX((min), MIN((val), (max)))
