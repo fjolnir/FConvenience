@@ -190,6 +190,7 @@ void _FLog(enum FLogLevel aLevel,
 #define NSFormat(fmt...)        [NSString stringWithFormat:fmt]
 #define NSMutableFormat(fmt...) [NSMutableString stringWithFormat:fmt]
 #define FetchReq(name)          [NSFetchRequest fetchRequestWithEntityName:(name)]
+#define ThreadDict              [[NSThread currentThread] threadDictionary]
 #define NSNullToNil(x) ({ \
     __typeof(x) __x = (x); \
     [[NSNull null] isEqual:__x] ? nil : __x; \
@@ -199,6 +200,19 @@ void _FLog(enum FLogLevel aLevel,
 #   define UIApp  [UIApplication sharedApplication]
 #endif
 
+#define DefineThreadLocal(name) \
+    static void __ThreadLocalCleanup_##name##__(void *ptr) { id const __unused obj = (__bridge_transfer id)ptr; } \
+    static pthread_key_t __ThreadLocal_##name##__
+#define InitThreadLocal(name) \
+    Once(^{ pthread_key_create(&__ThreadLocal_##name##__, &__ThreadLocalCleanup_##name##__); })
+#define ReadThreadLocal(name) \
+    (__bridge id)pthread_getspecific(__ThreadLocal_##name##__)
+#define WriteThreadLocal(name, value) ({ \
+    id const __unused __oldValue__ = (__bridge_transfer id)pthread_getspecific(__ThreadLocal_##name##__); \
+    id const __value__ = (value); \
+    pthread_setspecific(__ThreadLocal_##name##__, (__bridge_retained void *)__value__); \
+    __value__; \
+})
 
 #pragma mark Boxing
 #define OVERLOADABLE __attribute((overloadable))
