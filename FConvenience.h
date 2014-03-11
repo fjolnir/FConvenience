@@ -198,6 +198,12 @@ void _FLog(enum FLogLevel aLevel,
 #if TARGET_OS_IPHONE
 #   define Device [UIDevice currentDevice]
 #   define UIApp  [UIApplication sharedApplication]
+#   define CacheDir ({ \
+    NSArray * const cacheURLs = [FileManager URLsForDirectory:NSCachesDirectory \
+                                                    inDomains:NSUserDomainMask]; \
+    NSCAssert([cacheURLs count] > 0, @"Couldn't get cache directory path"); \
+    (NSString *)[cacheURLs[0] path]; \
+})
 #endif
 
 #define DefineThreadLocal(name) \
