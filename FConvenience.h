@@ -12,10 +12,14 @@
 #ifdef DEBUG
 #   define DEBUG_ON YES
 #   define CrashHere()   { *(int *)0 = 0xDEADBEEF; }
+#   define IfDebug(body...) body
 #else
 #   define DEBUG_ON NO
 #   define CrashHere()
+#   define IfDebug(body...)
 #endif
+
+#pragma mark Looping
 
 #define unless(body...) if(!(body))
 #define until(body...)  while(!(body))
