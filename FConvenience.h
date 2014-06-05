@@ -193,6 +193,7 @@ void _FLog(enum FLogLevel aLevel,
 #define Defaults                [NSUserDefaults standardUserDefaults]
 #define NSFormat(fmt...)        [NSString stringWithFormat:fmt]
 #define NSMutableFormat(fmt...) [NSMutableString stringWithFormat:fmt]
+#define Predicate(fmt...)       [NSPredicate predicateWithFormat:fmt]
 #define FetchReq(name)          [NSFetchRequest fetchRequestWithEntityName:(name)]
 #define ThreadDict              [[NSThread currentThread] threadDictionary]
 #define NSNullToNil(x) ({ \
