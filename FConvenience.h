@@ -97,6 +97,7 @@ static inline FFloat FFloatRangeMax(FFloatRange const aRange) {
 
 #pragma mark GCD Utilities
 #if __has_extension(blocks)
+#   include <dispatch/dispatch.h>
 #   define GlobalQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 #   define MainQueue dispatch_get_main_queue()
 
@@ -104,18 +105,18 @@ static inline FFloat FFloatRangeMax(FFloatRange const aRange) {
         static dispatch_once_t __token; \
         dispatch_once(&__token, ##body); \
     } while(0)
-#   define Async(body...) dispatch_async(GlobalQueue, ##body)
-#   define AsyncOnMain(body...) dispatch_async(MainQueue, ##body)
-#   define SyncOnMain(body...) do { \
-    dispatch_block_t const __blk = body; \
-    if(pthread_main_np()) \
-        __blk(); \
-    else \
-        dispatch_sync(MainQueue, __blk); \
-    } while(0)
-#   define AfterDelay(seconds, body...) \
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (seconds) * NSEC_PER_SEC), \
-                       MainQueue, ##body)
+    static inline void Async(dispatch_block_t const blk)       { dispatch_async(GlobalQueue, blk); }
+    static inline void AsyncOnMain(dispatch_block_t const blk) { dispatch_async(MainQueue, blk);   }
+    static inline void SyncOnMain(dispatch_block_t  const blk) {
+        if(pthread_main_np())
+            blk();
+        else
+            dispatch_sync(MainQueue, blk);
+    }
+    static inline void AfterDelay(float const seconds, dispatch_block_t const blk) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC),
+                       MainQueue, blk);
+    }
 
 #   define Memoize(x...) ({ \
         static __typeof(({ x; })) __memoized_x; \
