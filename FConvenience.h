@@ -273,19 +273,7 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 #        define NSFoundationVersionNumber_iOS_6_1 (DBL_MAX)
 #    endif
 
-#   define SevenOrNewer() (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
-
-// Runs a block of Code only if building using the iOS 7 SDK & running on iOS 7
-// (iOS 6 SDK build running on iOS 7 => does not get executed
-#   if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
-#       define IfIOS7(body...)              if(SevenOrNewer()) { body }
-#       define IfIOS7Or(extraCond, body...) if(SevenOrNewer() || (extraCond)) { body }
-#       define UnlessIOS7(body...)          if(!SevenOrNewer()) { body }
-#   else
-#       define IfIOS7(body...)               if(0) {}
-#       define IfIOS7Or(extraConds, body...) if(0) {}
-#       define UnlessIOS7(body...)           if(1) { body }
-#   endif
+#   define SixOrOlder() (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1)
 #endif
 
 
