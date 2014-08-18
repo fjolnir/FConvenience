@@ -316,25 +316,6 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
 
 #pragma mark Subscripts
 
-#if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-
-@interface NSArray (Subscripts)
-- (id)objectAtIndexedSubscript:(NSUInteger)idx;
-@end
-@interface NSMutableArray (Subscripts)
-- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
-@end
-
-@interface NSDictionary (Subscripts)
-- (id)objectForKeyedSubscript:(id)key;
-@end
-@interface NSMutableDictionary (Subscripts)
-- (void)setObject:(id)obj forKeyedSubscript:(id)key;
-@end
-#endif
-
 @interface NSUserDefaults (Subscripts)
 - (id)objectForKeyedSubscript:(id)aKey;
 - (void)setObject:(id)aObj forKeyedSubscript:(id)aKey;
