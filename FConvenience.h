@@ -187,6 +187,8 @@ void _FLog(enum FLogLevel aLevel,
 #endif
 
 #pragma mark Shorthands
+#define Unavailable(reason)     __attribute__((unavailable(reason)))
+
 #define NotificationCenter      [NSNotificationCenter defaultCenter]
 #define Bundle                  [NSBundle mainBundle]
 #define Workspace               [NSWorkspace sharedWorkspace]
