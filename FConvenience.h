@@ -243,6 +243,7 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
     static inline NSValue * OVERLOADABLE FBox(CGPoint x)           { return [NSValue valueWithCGPoint:x]; }
     static inline NSValue * OVERLOADABLE FBox(CGSize x)            { return [NSValue valueWithCGSize:x]; }
     static inline NSValue * OVERLOADABLE FBox(CGAffineTransform x) { return [NSValue valueWithCGAffineTransform:x]; }
+    static inline NSValue * OVERLOADABLE FBox(CATransform3D x)     { return [NSValue valueWithCATransform3D:x]; }
 
     static inline NSValue * OVERLOADABLE FBox(UIOffset x)          { return [NSValue valueWithUIOffset:x]; }
     static inline NSValue * OVERLOADABLE FBox(UIEdgeInsets x)      { return [NSValue valueWithUIEdgeInsets:x]; }
