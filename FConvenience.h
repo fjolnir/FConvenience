@@ -27,7 +27,7 @@
 #pragma mark Numerical Ranges
 
 #define PASTE(a,b) a##b
-#ifndef MIN
+#if !defined(MIN)
 #   define __MIN(a,b,c) ({ \
         __typeof(a) const PASTE(__a,c) = (a); \
         __typeof(b) const PASTE(__b,c) = (b); \
@@ -35,7 +35,7 @@
     })
 #   define MIN(a,b) __MIN((a), (b), __COUNTER__)
 #endif
-#ifndef MAX
+#if !defined(MAX)
 #   define __MAX(a,b,c) ({ \
         __typeof(a) const PASTE(__a,c) = (a); \
         __typeof(b) const PASTE(__b,c) = (b); \
@@ -44,21 +44,21 @@
 #   define MAX(a,b) __MAX((a), (b), __COUNTER__)
 #endif
 
-#ifndef BETWEEN
+#if !defined(BETWEEN)
 #   define __BETWEEN(val, low, high, c) ({ \
         __typeof(val) const PASTE(__val,c) = (val); \
         PASTE(__val,c) > (low) && PASTE(__val,c) < (high); \
     })
 #   define BETWEEN(val, low, high) __BETWEEN((val), (low), (high), __COUNTER__)
 #endif
-#ifndef INRANGE
+#if !defined(INRANGE)
 #   define __INRANGE(val, low, high, c) ({ \
         __typeof(val) const PASTE(__val,c) = (val); \
         PASTE(__val,c) >= (low) && PASTE(__val,c) <= (high); \
     })
 #   define INRANGE(val, low, high) __INRANGE((val), (low), (high), __COUNTER__)
 #endif
-#ifndef CLAMP
+#if !defined(CLAMP)
 #   define CLAMP(val, min, max) MAX((min), MIN((val), (max)))
 #endif
 
