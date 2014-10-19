@@ -251,7 +251,7 @@ static inline NSValue  * OVERLOADABLE FBox(NSRange x) { return [NSValue valueWit
         static inline NSValue * OVERLOADABLE FBox(CMTimeRange x)   { return [NSValue valueWithCMTimeRange:x]; }
         static inline NSValue * OVERLOADABLE FBox(CMTimeMapping x) { return [NSValue valueWithCMTimeMapping:x]; }
 #   endif
-#   ifdef __CORELOCATION__
+#   ifdef MK_EXTERN
         static inline NSValue * OVERLOADABLE FBox(CLLocationCoordinate2D x) { return [NSValue valueWithMKCoordinate:x]; }
         static inline NSValue * OVERLOADABLE FBox(MKCoordinateSpan x)       { return [NSValue valueWithMKCoordinateSpan:x]; }
 #   endif

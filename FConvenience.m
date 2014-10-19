@@ -82,23 +82,15 @@ UIImage *FScreenshot(float const aScale)
     UIGraphicsPushContext(context);
     for(UIWindow * const win in UIApp.windows)
     {
-        if([win screen] == [UIScreen mainScreen]) {
-            CGContextSaveGState(context);
-            CGContextTranslateCTM(context, [win center].x, [win center].y);
-            CGContextConcatCTM(context, [win transform]);
-            CGContextTranslateCTM(context,
-                                  -[win bounds].size.width * [[win layer] anchorPoint].x,
-                                  -[win bounds].size.height * [[win layer] anchorPoint].y);
+        CGContextSaveGState(context);
+        CGContextTranslateCTM(context, [win center].x, [win center].y);
+        CGContextConcatCTM(context, [win transform]);
+        CGContextTranslateCTM(context,
+                              -[win bounds].size.width * [[win layer] anchorPoint].x,
+                              -[win bounds].size.height * [[win layer] anchorPoint].y);
+        [[win layer] renderInContext:context];
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
-            if([win respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)])
-                [win drawViewHierarchyInRect:win.frame afterScreenUpdates:NO];
-            else
-#endif
-                [[win layer] renderInContext:context];
-
-            CGContextRestoreGState(context);
-        }
+        CGContextRestoreGState(context);
     }
     UIGraphicsPopContext();
     const uint8_t * const pixels = CGBitmapContextGetData(context);
