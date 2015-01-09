@@ -86,6 +86,11 @@ static inline FFloat FFloatRangeMax(FFloatRange const aRange) {
 #    define cgfabs fabsf
 #endif
 
+#define CGRectGetCenter(r) ({ \
+    CGRect __r = (r); \
+    (CGPoint) { CGRectGetMidX(__r), CGRectGetMidY(__r) }; \
+})
+
 #define _NSCompare(x, y, c) ({ \
     __typeof(x) PASTE(__x,c) = (x); \
     __typeof(y) PASTE(__y,c) = (y); \
