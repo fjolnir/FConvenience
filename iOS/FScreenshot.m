@@ -1,78 +1,7 @@
-#import "FConvenience.h"
-#import <QuartzCore/QuartzCore.h>
-#import <asl.h>
+#import "FScreenshot.h"
+#import "FUIKitShortcuts.h"
 
-static pthread_key_t _ASLClientThreadLocal;
-static void _aslClientCleanup(void *client)
-{
-    asl_close(client);
-}
-
-void _FLog(enum FLogLevel const aLevel,
-           const char * const aFile,
-           int const aLine,
-           NSString * const aFormat, ...)
-{
-    Once(^{ pthread_key_create(&_ASLClientThreadLocal, &_aslClientCleanup); });
-    
-    aslclient client = pthread_getspecific(_ASLClientThreadLocal);
-    if(!client) {
-        client = asl_open(NULL,
-                          [[Bundle bundleIdentifier] UTF8String],
-                          ASL_OPT_STDERR|ASL_OPT_NO_DELAY);
-#ifndef DEBUG
-        asl_set_filter(client, ASL_FILTER_MASK_UPTO(ASL_LEVEL_WARNING));
-#endif
-    }
-    
-#ifndef DEBUG
-    // For some reason, asl_set_filter isn't doing its job.. so for now I'm just
-    // not logging anything above warning in production builds
-    if(aLevel <= ASL_LEVEL_WARNING) {
-#endif
-    va_list argList;
-    va_start(argList, aFormat);
-    NSString * const message = [[NSString alloc] initWithFormat:aFormat
-                                                      arguments:argList];
-    va_end(argList);
-    
-    aslmsg const msg = asl_new(ASL_TYPE_MSG);
-    asl_set(msg, ASL_KEY_READ_UID, "-1");
-    asl_log(client, msg, aLevel,
-            "%10.15s:%u: %s",
-            [[@(aFile) lastPathComponent] UTF8String], aLine, [message UTF8String]);
-    asl_free(msg);
-#ifndef DEBUG
-    }
-#endif
-}
-
-
-@implementation NSUserDefaults (Subscripts)
-- (id)objectForKeyedSubscript:(id)aKey
-{
-    return [self objectForKey:aKey];
-}
-- (void)setObject:(id)aObj forKeyedSubscript:(id)aKey
-{
-    [self setObject:aObj forKey:aKey];
-}
-@end
-
-@implementation NSCache (Subscripts)
-- (id)objectForKeyedSubscript:(id)aKey
-{
-    return [self objectForKey:aKey];
-}
-- (void)setObject:(id)aObj forKeyedSubscript:(id)aKey
-{
-    [self setObject:aObj forKey:aKey];
-}
-@end
-
-#if TARGET_OS_IPHONE && defined(__OBJC__)
-
-UIImage *FScreenshot(float const aScale)
+UIImage *FScreenshot(CGFloat const aScale)
 {
     CGSize const imageSize = [[UIScreen mainScreen] bounds].size;
     UIGraphicsBeginImageContextWithOptions(imageSize, YES, aScale);
@@ -137,5 +66,3 @@ UIImage *FScreenshot(float const aScale)
     
     return image;
 }
-
-#endif

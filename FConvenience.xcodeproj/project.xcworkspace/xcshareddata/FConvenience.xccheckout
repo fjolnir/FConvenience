@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>92752798-037B-49A9-9E4D-1DB04C172DDA</string>
+	<key>IDESourceControlProjectName</key>
+	<string>FConvenience</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9A51A1245E619ACD00DFB6AE1FB4F93832BDE296</key>
+		<string>github.com:locarise/ios-dashboard.git</string>
+		<key>C25E57FB878A0F2EB20A53C5FF7DA4DD4008E839</key>
+		<string>https://github.com/fjolnir/FConvenience.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>FConvenience.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9A51A1245E619ACD00DFB6AE1FB4F93832BDE296</key>
+		<string>../../..</string>
+		<key>C25E57FB878A0F2EB20A53C5FF7DA4DD4008E839</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/fjolnir/FConvenience.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C25E57FB878A0F2EB20A53C5FF7DA4DD4008E839</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9A51A1245E619ACD00DFB6AE1FB4F93832BDE296</string>
+			<key>IDESourceControlWCCName</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C25E57FB878A0F2EB20A53C5FF7DA4DD4008E839</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FConvenience</string>
+		</dict>
+	</array>
+</dict>
+</plist>
