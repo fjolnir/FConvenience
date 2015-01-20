@@ -26,6 +26,4 @@
 #endif
 #define IfDebug if(DEBUG_ON)
 
-#pragma mark Shorthands
-
 #endif // _FCONV_H_
