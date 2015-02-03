@@ -9,6 +9,7 @@
 #   import <FConvenience/FFoundationShortcuts.h>
 #   import <FConvenience/FBoxing.h>
 #   import <FConvenience/FSubscripts.h>
+#   import <FConvenience/NSCollections+FConvenience.h>
 
 #   if TARGET_OS_IPHONE
 #      import <FConvenience/FUIKitShortcuts.h>

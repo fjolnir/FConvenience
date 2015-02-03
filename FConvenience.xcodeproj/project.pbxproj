@@ -19,6 +19,8 @@
 		1DA6EDDE1A6DF2EA00F2510C /* FScreenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DA6EDDC1A6DF2EA00F2510C /* FScreenshot.m */; };
 		1DA6EDE01A6DF35500F2510C /* FUIKitShortcuts.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DA6EDDF1A6DF35500F2510C /* FUIKitShortcuts.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1DA6EDE21A6DF49500F2510C /* FFoundationShortcuts.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DA6EDE11A6DF49500F2510C /* FFoundationShortcuts.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1DF5A0581A80582C0037AB34 /* NSCollections+FConvenience.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF5A0561A80582C0037AB34 /* NSCollections+FConvenience.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1DF5A0591A80582C0037AB34 /* NSCollections+FConvenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF5A0571A80582C0037AB34 /* NSCollections+FConvenience.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,8 @@
 		1DA6EDDF1A6DF35500F2510C /* FUIKitShortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FUIKitShortcuts.h; sourceTree = "<group>"; };
 		1DA6EDE11A6DF49500F2510C /* FFoundationShortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFoundationShortcuts.h; sourceTree = SOURCE_ROOT; };
 		1DA6EDE41A6DF51900F2510C /* FAppKitShortcuts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FAppKitShortcuts.h; sourceTree = "<group>"; };
+		1DF5A0561A80582C0037AB34 /* NSCollections+FConvenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCollections+FConvenience.h"; sourceTree = SOURCE_ROOT; };
+		1DF5A0571A80582C0037AB34 /* NSCollections+FConvenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCollections+FConvenience.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,8 @@
 				1DA6EDCC1A6DE7D000F2510C /* FLogging.c */,
 				1DA6EDD11A6DE9C800F2510C /* FSubscripts.h */,
 				1DA6EDD21A6DE9C800F2510C /* FSubscripts.m */,
+				1DF5A0561A80582C0037AB34 /* NSCollections+FConvenience.h */,
+				1DF5A0571A80582C0037AB34 /* NSCollections+FConvenience.m */,
 				1DA6EDD51A6DEA2600F2510C /* iOS */,
 				1DA6EDE31A6DF50F00F2510C /* Mac */,
 				1DA6EDAE1A6DE71600F2510C /* Supporting Files */,
@@ -125,6 +131,7 @@
 				1DA6EDDD1A6DF2EA00F2510C /* FScreenshot.h in Headers */,
 				1DA6EDE01A6DF35500F2510C /* FUIKitShortcuts.h in Headers */,
 				1DA6EDDA1A6DF14100F2510C /* FNumericalUtilities.h in Headers */,
+				1DF5A0581A80582C0037AB34 /* NSCollections+FConvenience.h in Headers */,
 				1DA6EDD31A6DE9C800F2510C /* FSubscripts.h in Headers */,
 				1DA6EDCA1A6DE78200F2510C /* FDispatch.h in Headers */,
 			);
@@ -198,6 +205,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DA6EDDE1A6DF2EA00F2510C /* FScreenshot.m in Sources */,
+				1DF5A0591A80582C0037AB34 /* NSCollections+FConvenience.m in Sources */,
 				1DA6EDCE1A6DE7D000F2510C /* FLogging.c in Sources */,
 				1DA6EDD41A6DE9C800F2510C /* FSubscripts.m in Sources */,
 			);
