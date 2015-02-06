@@ -1,6 +1,10 @@
 #ifndef FConvenience_FNumericalUtilities_h
 #define FConvenience_FNumericalUtilities_h
 
+#ifdef __OBJC__
+#   import <Foundation/Foundation.h>
+#endif
+
 #define PASTE(a,b) a##b
 #if !defined(MIN)
 #   define __MIN(a,b,c) ({ \
