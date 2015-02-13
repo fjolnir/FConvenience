@@ -21,7 +21,8 @@
             dispatch_sync(MainQueue, blk);
     }
     static inline void AfterDelay(float const seconds, dispatch_block_t const blk) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC),
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
+                                     (int64_t)(seconds * NSEC_PER_SEC)),
                        MainQueue, blk);
     }
 
