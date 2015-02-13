@@ -27,3 +27,7 @@
     CGRect __r = (r); \
     (CGPoint) { CGRectGetMidX(__r), CGRectGetMidY(__r) }; \
 })
+#define CGRectArea(r) ({ \
+    CGRect __r = (r); \
+    fabs(__r.size.width * __r.size.height); \
+})
