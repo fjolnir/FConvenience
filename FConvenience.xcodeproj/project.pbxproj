@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D1DC29D1A95DF4900712013 /* NSObject+FConvenience.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D1DC29B1A95DF4900712013 /* NSObject+FConvenience.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1D1DC29E1A95DF4900712013 /* NSObject+FConvenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1DC29C1A95DF4900712013 /* NSObject+FConvenience.m */; };
 		1DA6EDCA1A6DE78200F2510C /* FDispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DA6EDC91A6DE78200F2510C /* FDispatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1DA6EDCD1A6DE7D000F2510C /* FLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DA6EDCB1A6DE7D000F2510C /* FLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1DA6EDCE1A6DE7D000F2510C /* FLogging.c in Sources */ = {isa = PBXBuildFile; fileRef = 1DA6EDCC1A6DE7D000F2510C /* FLogging.c */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D1DC29B1A95DF4900712013 /* NSObject+FConvenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+FConvenience.h"; sourceTree = SOURCE_ROOT; };
+		1D1DC29C1A95DF4900712013 /* NSObject+FConvenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+FConvenience.m"; sourceTree = SOURCE_ROOT; };
 		1DA6EDAB1A6DE71600F2510C /* FConvenience.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FConvenience.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DA6EDAF1A6DE71600F2510C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DA6EDC91A6DE78200F2510C /* FDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDispatch.h; sourceTree = SOURCE_ROOT; };
@@ -84,6 +88,8 @@
 				1DA6EDD21A6DE9C800F2510C /* FSubscripts.m */,
 				1DF5A0561A80582C0037AB34 /* NSCollections+FConvenience.h */,
 				1DF5A0571A80582C0037AB34 /* NSCollections+FConvenience.m */,
+				1D1DC29B1A95DF4900712013 /* NSObject+FConvenience.h */,
+				1D1DC29C1A95DF4900712013 /* NSObject+FConvenience.m */,
 				1DA6EDD51A6DEA2600F2510C /* iOS */,
 				1DA6EDE31A6DF50F00F2510C /* Mac */,
 				1DA6EDAE1A6DE71600F2510C /* Supporting Files */,
@@ -129,6 +135,7 @@
 				1DA6EDCD1A6DE7D000F2510C /* FLogging.h in Headers */,
 				1DA6EDE21A6DF49500F2510C /* FFoundationShortcuts.h in Headers */,
 				1DA6EDDD1A6DF2EA00F2510C /* FScreenshot.h in Headers */,
+				1D1DC29D1A95DF4900712013 /* NSObject+FConvenience.h in Headers */,
 				1DA6EDE01A6DF35500F2510C /* FUIKitShortcuts.h in Headers */,
 				1DA6EDDA1A6DF14100F2510C /* FNumericalUtilities.h in Headers */,
 				1DF5A0581A80582C0037AB34 /* NSCollections+FConvenience.h in Headers */,
@@ -204,6 +211,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D1DC29E1A95DF4900712013 /* NSObject+FConvenience.m in Sources */,
 				1DA6EDDE1A6DF2EA00F2510C /* FScreenshot.m in Sources */,
 				1DF5A0591A80582C0037AB34 /* NSCollections+FConvenience.m in Sources */,
 				1DA6EDCE1A6DE7D000F2510C /* FLogging.c in Sources */,
