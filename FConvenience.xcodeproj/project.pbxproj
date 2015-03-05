@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1D1DC29D1A95DF4900712013 /* NSObject+FConvenience.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D1DC29B1A95DF4900712013 /* NSObject+FConvenience.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1D1DC29E1A95DF4900712013 /* NSObject+FConvenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1DC29C1A95DF4900712013 /* NSObject+FConvenience.m */; };
+		1D451EED1AA6D10000F57304 /* FShortcuts.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D451EEC1AA6D10000F57304 /* FShortcuts.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1DA6EDCA1A6DE78200F2510C /* FDispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DA6EDC91A6DE78200F2510C /* FDispatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1DA6EDCD1A6DE7D000F2510C /* FLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DA6EDCB1A6DE7D000F2510C /* FLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1DA6EDCE1A6DE7D000F2510C /* FLogging.c in Sources */ = {isa = PBXBuildFile; fileRef = 1DA6EDCC1A6DE7D000F2510C /* FLogging.c */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		1D1DC29B1A95DF4900712013 /* NSObject+FConvenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+FConvenience.h"; sourceTree = SOURCE_ROOT; };
 		1D1DC29C1A95DF4900712013 /* NSObject+FConvenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+FConvenience.m"; sourceTree = SOURCE_ROOT; };
+		1D451EEC1AA6D10000F57304 /* FShortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FShortcuts.h; sourceTree = SOURCE_ROOT; };
 		1DA6EDAB1A6DE71600F2510C /* FConvenience.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FConvenience.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DA6EDAF1A6DE71600F2510C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DA6EDC91A6DE78200F2510C /* FDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDispatch.h; sourceTree = SOURCE_ROOT; };
@@ -78,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				1DA6EDD71A6DEE3000F2510C /* FConvenience.h */,
+				1D451EEC1AA6D10000F57304 /* FShortcuts.h */,
 				1DA6EDD91A6DF14100F2510C /* FNumericalUtilities.h */,
 				1DA6EDE11A6DF49500F2510C /* FFoundationShortcuts.h */,
 				1DA6EDCF1A6DE8C000F2510C /* FBoxing.h */,
@@ -134,6 +137,7 @@
 				1DA6EDD01A6DE8C000F2510C /* FBoxing.h in Headers */,
 				1DA6EDCD1A6DE7D000F2510C /* FLogging.h in Headers */,
 				1DA6EDE21A6DF49500F2510C /* FFoundationShortcuts.h in Headers */,
+				1D451EED1AA6D10000F57304 /* FShortcuts.h in Headers */,
 				1DA6EDDD1A6DF2EA00F2510C /* FScreenshot.h in Headers */,
 				1D1DC29D1A95DF4900712013 /* NSObject+FConvenience.h in Headers */,
 				1DA6EDE01A6DF35500F2510C /* FUIKitShortcuts.h in Headers */,

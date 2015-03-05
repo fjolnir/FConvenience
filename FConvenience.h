@@ -4,6 +4,7 @@
 #include <FConvenience/FLogging.h>
 #include <FConvenience/FDispatch.h>
 #include <FConvenience/FNumericalUtilities.h>
+#include <FConvenience/FShortcuts.h>
 
 #ifdef __OBJC__
 #   import <FConvenience/FFoundationShortcuts.h>
