@@ -1,7 +1,11 @@
 #import <Foundation/Foundation.h>
 
 typedef id(^FCMapBlock)(id obj);
+typedef id(^FCMapPairBlock)(id *key, id obj);
 typedef BOOL(^FCFilterBlock)(id obj);
+
+// Return from a map method to remove the value from the result.
+extern id const FCSkipSentinel;
 
 @interface NSArray (FConvenience)
 - (NSArray *)fc_map:(FCMapBlock)blk;
@@ -14,6 +18,7 @@ typedef BOOL(^FCFilterBlock)(id obj);
 @end
 
 @interface NSDictionary (FConvenience)
+- (NSDictionary *)fc_map:(FCMapPairBlock)blk;
 - (NSDictionary *)fc_mapKeys:(FCMapBlock)blk;
 - (NSDictionary *)fc_filterKeys:(FCFilterBlock)blk;
 @end
