@@ -75,6 +75,17 @@ id const FCSkipSentinel = @"__FCSkipSentinel__";
     }
     return result;
 }
+- (NSDictionary *)fc_filter:(FCFilterBlock)blk
+{
+    NSParameterAssert(blk);
+    
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:self.count];
+    for(id key in self) {
+        if(blk(self[key]))
+            result[key] = self[key];
+    }
+    return result;
+}
 - (NSDictionary *)fc_filterKeys:(FCFilterBlock)blk
 {
     NSParameterAssert(blk);

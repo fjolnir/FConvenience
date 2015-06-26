@@ -20,5 +20,6 @@ extern id const FCSkipSentinel;
 @interface NSDictionary (FConvenience)
 - (NSDictionary *)fc_map:(FCMapPairBlock)blk;
 - (NSDictionary *)fc_mapKeys:(FCMapBlock)blk;
+- (NSDictionary *)fc_filter:(FCFilterBlock)blk;
 - (NSDictionary *)fc_filterKeys:(FCFilterBlock)blk;
 @end
